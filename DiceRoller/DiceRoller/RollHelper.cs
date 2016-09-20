@@ -34,25 +34,13 @@ namespace DiceRoller
         public static GenericDie CreateGenericDie(int sides)
         {
             int[] values = new int[sides];
-            for (int i = 1; i > sides + 1; i++)
+            for (int i = 0; i < sides; i++)
             {
-                values[i] = i;
+                values[i] = i+1;
             }
+            GenericDie die = new GenericDie(values) { Id = _id, Name = "D" + sides };
             _id++;
-            return new GenericDie(values) { Id = _id, Name = "D" + sides };
-        }
-
-        /// <summary>
-        /// Rolls a generic die that will return one of the die's values
-        /// </summary>
-        /// <param name="die">The die to be rolled</param>
-        /// <returns>The result of the generic die</returns>
-        public static int RollGenericDie(GenericDie die)
-        {
-            Random result = new Random();
-            int lowerBound = 0;
-            int upperBound = die.NumberOfSides;
-            return die.Values[result.Next(lowerBound, upperBound)];
+            return die;
         }
     }
 }
