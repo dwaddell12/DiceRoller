@@ -8,4 +8,9 @@
   <PropertyGroup Label="Configuration">
     <Import_RootNamespace>DiceRoller</Import_RootNamespace>
   </PropertyGroup>
+  <ItemGroup>
+    <Compile Include="$(MSBuildThisFileDirectory)Models\BaseObject.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Models\GenericDie.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)RollHelper.cs" />
+  </ItemGroup>
 </Project>
