@@ -13,7 +13,10 @@ Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "DiceRoller", "DiceRoller\Di
 EndProject
 Global
 	GlobalSection(SharedMSBuildProjectFiles) = preSolution
+		DiceRoller\DiceRoller\DiceRoller.projitems*{2f71f538-0d39-4385-b700-6b77cc3d26d1}*SharedItemsImports = 4
+		DiceRoller\DiceRoller\DiceRoller.projitems*{7a3b00d5-e900-4cd8-905a-9d0ed85526f2}*SharedItemsImports = 4
 		DiceRoller\DiceRoller\DiceRoller.projitems*{82050e14-0e44-45b1-b7b6-618acc72992f}*SharedItemsImports = 13
+		DiceRoller\DiceRoller\DiceRoller.projitems*{e37c51ca-30e3-4a82-8341-defc677fb338}*SharedItemsImports = 4
 	EndGlobalSection
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
