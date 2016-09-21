@@ -1,5 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <resources>
 	<string name="welcome">Welcome!</string>
-	<string name="app_name">DiceRoller.Droid</string>
+	<string name="app_name">Dice Roller</string>
+  <string name="lbl_result">Result: </string>
 </resources>

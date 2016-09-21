@@ -13,6 +13,8 @@ namespace DiceRoller.Droid
 	[Activity (Label = "DiceRoller.Droid", MainLauncher = true, Icon = "@drawable/icon")]
 	public class MainActivity : Activity
 	{
+        private const string RESULT = "Result";
+
         ListView dieList;
         TextView dieResult;
 
@@ -20,16 +22,26 @@ namespace DiceRoller.Droid
 		{
 			base.OnCreate (bundle);
 			SetContentView (Resource.Layout.Main);
-            InitializeViews();
-		}
-
-        protected void InitializeViews()
-        {
             dieResult = FindViewById<TextView>(Resource.Id.dieResult);
-            CreateDieList();
+            if(bundle != null)
+            {
+                dieResult.Text = bundle.GetString(RESULT);
+            }
+            InitializeViews();
         }
 
-        protected void CreateDieList()
+        /// <summary>
+        /// Sets up the views of the MainActivity
+        /// </summary>
+        protected void InitializeViews()
+        {
+            CreateGenericDieList();
+        }
+
+        /// <summary>
+        /// Sets up a list view that is populated with generic dice that display a result when tapped
+        /// </summary>
+        protected void CreateGenericDieList()
         {
             GenericDie[] dice = RollHelper.InitializeGenericDice();
             dieList = FindViewById<ListView>(Resource.Id.dieList);
@@ -39,6 +51,12 @@ namespace DiceRoller.Droid
                 var result = dice[args.Position].RollDie().ToString();
                 dieResult.Text = result;
             };
+        }
+
+        protected override void OnSaveInstanceState(Bundle outState)
+        {
+            base.OnSaveInstanceState(outState);
+            outState.PutString(RESULT, dieResult.Text.ToString());
         }
     }
 }

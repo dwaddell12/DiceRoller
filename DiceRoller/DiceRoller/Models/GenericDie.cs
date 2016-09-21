@@ -4,6 +4,9 @@ using System.Text;
 
 namespace DiceRoller.Models
 {
+    /// <summary>
+    /// A generic die is a common die who's sides are gradually iterating numbers
+    /// </summary>
     public class GenericDie : BaseObject, IRollable
     {
         int lowerBound = 0,
