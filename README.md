@@ -1,2 +1,2 @@
 # DiceRoller
-A simple application for rolling dice.
+A simple mobile application for rolling dice made with Xamarin. Currently only supports Android devices.
