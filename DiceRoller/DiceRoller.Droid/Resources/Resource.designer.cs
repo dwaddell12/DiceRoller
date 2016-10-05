@@ -72,6 +72,9 @@ namespace DiceRoller.Droid
 			// aapt resource value: 0x7f050003
 			public const int dieResult = 2131034115;
 			
+			// aapt resource value: 0x7f050004
+			public const int resultFragment = 2131034116;
+			
 			static Id()
 			{
 				global::Android.Runtime.ResourceIdManager.UpdateIdValues();
@@ -90,6 +93,9 @@ namespace DiceRoller.Droid
 			
 			// aapt resource value: 0x7f030001
 			public const int Main = 2130903041;
+			
+			// aapt resource value: 0x7f030002
+			public const int Result = 2130903042;
 			
 			static Layout()
 			{

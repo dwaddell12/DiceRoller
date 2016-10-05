@@ -10,7 +10,7 @@ using Android.Runtime;
 using Android.Views;
 using Android.Widget;
 
-using DiceRoller.Models;
+using DiceRoller.Models.Dice;
 
 namespace DiceRoller.Droid
 {

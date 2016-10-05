@@ -7,6 +7,7 @@ using Android.Views;
 using Android.Widget;
 using Android.OS;
 using DiceRoller.Models;
+using DiceRoller.Models.Dice;
 
 namespace DiceRoller.Droid
 {
@@ -15,9 +16,18 @@ namespace DiceRoller.Droid
 	{
         private const string RESULT = "Result";
 
-        ListView dieList;
-        TextView dieResult;
-
+        /// <summary>
+        /// 
+        /// </summary>
+        private ListView dieList;
+        /// <summary>
+        /// 
+        /// </summary>
+        private TextView dieResult;
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="bundle"></param>
 		protected override void OnCreate (Bundle bundle)
 		{
 			base.OnCreate (bundle);
@@ -31,7 +41,7 @@ namespace DiceRoller.Droid
         }
 
         /// <summary>
-        /// Sets up the views of the MainActivity
+        /// Sets up the views of the MainActivity.
         /// </summary>
         protected void InitializeViews()
         {
@@ -39,7 +49,7 @@ namespace DiceRoller.Droid
         }
 
         /// <summary>
-        /// Sets up a list view that is populated with generic dice that display a result when tapped
+        /// Sets up a list view that is populated with generic dice that display a result when tapped.
         /// </summary>
         protected void CreateGenericDieList()
         {
@@ -52,7 +62,10 @@ namespace DiceRoller.Droid
                 dieResult.Text = result;
             };
         }
-
+        /// <summary>
+        /// Collects pertainant data from the MainActivity
+        /// </summary>
+        /// <param name="outState">A bundle of data that is to persist.</param>
         protected override void OnSaveInstanceState(Bundle outState)
         {
             base.OnSaveInstanceState(outState);

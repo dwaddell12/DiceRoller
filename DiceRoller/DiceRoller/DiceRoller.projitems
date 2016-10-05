@@ -10,7 +10,9 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="$(MSBuildThisFileDirectory)Models\BaseObject.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Models\GenericDie.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Models\Dice\BaseDie.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Models\Dice\GenericDie.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Models\Game\BaseGame.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Models\IRollable.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)RollHelper.cs" />
   </ItemGroup>

@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
-using DiceRoller.Models;
+using DiceRoller.Models.Dice;
 
 namespace DiceRoller
 {
@@ -14,7 +14,7 @@ namespace DiceRoller
         /// <summary>
         /// Creates eight generic dice used in typical Tabletop games
         /// </summary>
-        /// <returns>An array of generic dice</returns>
+        /// <returns>An array of generic dice.</returns>
         public static GenericDie[] InitializeGenericDice()
         {
             return new GenericDie[]
@@ -31,14 +31,14 @@ namespace DiceRoller
         /// </summary>
         /// <param name="sides">The number of sides for the generic die</param>
         /// <returns>The generic die object with all values inserted</returns>
-        public static GenericDie CreateGenericDie(int sides)
+        private static GenericDie CreateGenericDie(int sides)
         {
-            int[] values = new int[sides];
+            string[] values = new string[sides];
             for (int i = 0; i < sides; i++)
             {
-                values[i] = i+1;
+                values[i] = i+1.ToString();
             }
-            GenericDie die = new GenericDie(values) { Id = _id, Name = "D" + sides };
+            GenericDie die = new GenericDie(values) { Id = _id, Name = "d" + sides };
             _id++;
             return die;
         }
