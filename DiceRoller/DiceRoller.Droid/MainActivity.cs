@@ -15,15 +15,11 @@ namespace DiceRoller.Droid
 	public class MainActivity : Activity
 	{
         private const string RESULT = "Result";
-
-        /// <summary>
-        /// 
-        /// </summary>
+        
         private ListView dieList;
-        /// <summary>
-        /// 
-        /// </summary>
         private TextView dieResult;
+        private ResultFragment resultFrag;
+
         /// <summary>
         /// 
         /// </summary>
@@ -43,23 +39,29 @@ namespace DiceRoller.Droid
         /// <summary>
         /// Sets up the views of the MainActivity.
         /// </summary>
-        protected void InitializeViews()
+        private void InitializeViews()
         {
             CreateGenericDieList();
+            InitializeResultFragment();
+        }
+
+        private void InitializeResultFragment()
+        {
+            //resultFrag = FindViewById<ResultFragment>(Resource.Id)
         }
 
         /// <summary>
         /// Sets up a list view that is populated with generic dice that display a result when tapped.
         /// </summary>
-        protected void CreateGenericDieList()
+        private void CreateGenericDieList()
         {
             GenericDie[] dice = RollHelper.InitializeGenericDice();
             dieList = FindViewById<ListView>(Resource.Id.dieList);
 
             dieList.Adapter = new DiceLayoutAdapter(this, dice);
             dieList.ItemClick += (sender, args) => {
-                var result = dice[args.Position].RollDie().ToString();
-                dieResult.Text = result;
+                var result = dice[args.Position].RollDie();
+                dieResult.Text = result.ToString();
             };
         }
         /// <summary>

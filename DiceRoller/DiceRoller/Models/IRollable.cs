@@ -4,8 +4,15 @@ using System.Text;
 
 namespace DiceRoller.Models
 {
+    /// <summary>
+    /// 
+    /// </summary>
     interface IRollable
     {
-        string RollDie();
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <returns></returns>
+        object RollDie();
     }
 }

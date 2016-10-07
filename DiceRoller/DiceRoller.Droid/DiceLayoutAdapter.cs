@@ -52,6 +52,7 @@ namespace DiceRoller.Droid
                 view = context.LayoutInflater.Inflate(Resource.Layout.DieListItem, null);
             }
             view.FindViewById<TextView>(Resource.Id.diceName).Text = dice[position].Name;
+            //view.FindViewById<ImageView>(Resource.Id.diceIcon).SetImageIcon()
             return view;
         }
     }

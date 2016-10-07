@@ -13,22 +13,20 @@ using Android.Widget;
 
 namespace DiceRoller.Droid
 {
-    public class ResultFragment : Fragment
+    public class DieListFragmentcs : Fragment
     {
-        TextView resultText;
-
         public override void OnCreate(Bundle savedInstanceState)
         {
             base.OnCreate(savedInstanceState);
-            resultText = View.FindViewById<TextView>(Resource.Id.dieResult);
-            
+
+            // Create your fragment here
         }
 
         public override View OnCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
         {
             // Use this to return your custom view for this Fragment
             // return inflater.Inflate(Resource.Layout.YourFragment, container, false);
-            
+
             return base.OnCreateView(inflater, container, savedInstanceState);
         }
     }

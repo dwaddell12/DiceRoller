@@ -5,6 +5,9 @@ using DiceRoller.Models.Dice;
 
 namespace DiceRoller
 {
+    /// <summary>
+    /// 
+    /// </summary>
     static class RollHelper
     {
         /// <summary>
@@ -36,7 +39,7 @@ namespace DiceRoller
             string[] values = new string[sides];
             for (int i = 0; i < sides; i++)
             {
-                values[i] = i+1.ToString();
+                values[i] = (i + 1).ToString();
             }
             GenericDie die = new GenericDie(values) { Id = _id, Name = "d" + sides };
             _id++;

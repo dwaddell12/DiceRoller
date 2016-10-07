@@ -15,5 +15,6 @@
     <Compile Include="$(MSBuildThisFileDirectory)Models\Game\BaseGame.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Models\IRollable.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)RollHelper.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)SQLite.cs" />
   </ItemGroup>
 </Project>

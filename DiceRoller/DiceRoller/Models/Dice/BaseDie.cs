@@ -25,7 +25,7 @@ namespace DiceRoller.Models.Dice
         /// <summary>
         /// The random value for getting the result.
         /// </summary>
-        private Random rnd;
+        private Random rand;
         /// <summary>
         /// The value at the position represented by side of the die.
         /// </summary>
@@ -39,11 +39,11 @@ namespace DiceRoller.Models.Dice
         /// Rolls a die that will return one of the die's values.
         /// </summary>
         /// <returns>The result of the die.</returns>
-        public string RollDie()
+        public object RollDie()
         {
-            rnd = new Random();
+            rand = new Random();
             upperBound = NumberOfSides;
-            result = Values[rnd.Next(lowerBound, upperBound)];
+            result = Values[rand.Next(lowerBound, upperBound)];
             return result;
         }
         /// <summary>
@@ -52,7 +52,7 @@ namespace DiceRoller.Models.Dice
         /// <param name="values">An array of values for the die.</param>
         public BaseDie(string[] values)
         {
-            this.Values = values;
+            Values = values;
         }
     }
 }

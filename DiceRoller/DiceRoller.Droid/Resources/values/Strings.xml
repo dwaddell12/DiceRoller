@@ -2,5 +2,5 @@
 <resources>
 	<string name="welcome">Welcome!</string>
 	<string name="app_name">Dice Roller</string>
-  <string name="lbl_result">Result: </string>
+  <string name="lbl_result">Result</string>
 </resources>
