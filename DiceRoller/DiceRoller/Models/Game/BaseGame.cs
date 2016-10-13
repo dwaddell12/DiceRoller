@@ -7,6 +7,11 @@ namespace DiceRoller.Models.Game
 {
     public abstract class BaseGame : BaseObject
     {
-        public BaseDie Dice { get; set; }
+        public List<BaseDie> Dice { get; set; }
+
+        public BaseGame()
+        {
+            this.Dice = new List<BaseDie>();
+        }
     }
 }

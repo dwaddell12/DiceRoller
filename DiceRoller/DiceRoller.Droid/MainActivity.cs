@@ -14,11 +14,15 @@ namespace DiceRoller.Droid
 	[Activity (Label = "DiceRoller.Droid", MainLauncher = true, Icon = "@drawable/icon")]
 	public class MainActivity : Activity
 	{
-        private const string RESULT = "Result";
-        
+        /// <summary>
+        /// The result of the dice roll
+        /// </summary>
+        private const string RESULTS = "Results";
+
+        private bool _isDualPane;
         private ListView dieList;
         private TextView dieResult;
-        private ResultFragment resultFrag;
+        private ResultsFragment resultFrag;
 
         /// <summary>
         /// 
@@ -27,12 +31,15 @@ namespace DiceRoller.Droid
 		protected override void OnCreate (Bundle bundle)
 		{
 			base.OnCreate (bundle);
-			SetContentView (Resource.Layout.Main);
-            dieResult = FindViewById<TextView>(Resource.Id.dieResult);
+			SetContentView (Resource.Layout.Activity_Main);
+            FragmentTransaction fragTransact = FragmentManager.BeginTransaction();
+            /*
+            dieResult = FindViewById<TextView>(Resource.Id.Result_DiceSide);
             if(bundle != null)
             {
-                dieResult.Text = bundle.GetString(RESULT);
+                dieResult.Text = bundle.GetString(RESULTS);
             }
+            */
             InitializeViews();
         }
 
@@ -41,13 +48,21 @@ namespace DiceRoller.Droid
         /// </summary>
         private void InitializeViews()
         {
-            CreateGenericDieList();
+            //LoadGames();
+            //SelectFirstGame();
+            //
+            InitializeSelectorFragment();
             InitializeResultFragment();
+        }
+
+        private void InitializeSelectorFragment()
+        {
+
         }
 
         private void InitializeResultFragment()
         {
-            //resultFrag = FindViewById<ResultFragment>(Resource.Id)
+
         }
 
         /// <summary>
@@ -56,7 +71,7 @@ namespace DiceRoller.Droid
         private void CreateGenericDieList()
         {
             GenericDie[] dice = RollHelper.InitializeGenericDice();
-            dieList = FindViewById<ListView>(Resource.Id.dieList);
+            dieList = FindViewById<ListView>(Resource.Id.Die_List);
 
             dieList.Adapter = new DiceLayoutAdapter(this, dice);
             dieList.ItemClick += (sender, args) => {
@@ -71,7 +86,7 @@ namespace DiceRoller.Droid
         protected override void OnSaveInstanceState(Bundle outState)
         {
             base.OnSaveInstanceState(outState);
-            outState.PutString(RESULT, dieResult.Text.ToString());
+            //outState.PutString(RESULTS, dieResult.Text.ToString());
         }
     }
 }

@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="horizontal"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:id="@+id/DiceItem_Layout">
+  <ImageView
+      android:src="@android:drawable/ic_menu_gallery"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:id="@+id/Dice_Icon"
+      android:layout_gravity="center_vertical"
+      android:layout_weight="0.25"
+      android:layout_marginLeft="20px"
+      android:layout_marginRight="10px" />
+  <TextView
+      android:textAppearance="?android:attr/textAppearanceMedium"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:id="@+id/Dice_Name"
+      android:gravity="center_vertical"
+      android:text="&quot;Sample Text&quot;"
+      android:layout_gravity="center_vertical"
+      android:layout_weight="2" />
+  <EditText
+      android:inputType="number"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:id="@+id/Dice_Amount"
+      android:numeric="integer"
+      android:layout_weight="0.25"
+      android:gravity="center"
+      android:layout_marginRight="12px"
+      android:layout_marginLeft="20px"
+      android:layout_gravity="center_vertical"
+      android:hint="0"
+      android:maxLength="2" />
+</LinearLayout>

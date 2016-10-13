@@ -14,12 +14,12 @@ using DiceRoller.Models.Dice;
 
 namespace DiceRoller.Droid
 {
-    public class DiceLayoutAdapter : BaseAdapter<BaseDie>
+    public class ResultsLayoutAdapter : BaseAdapter<BaseDie>
     {
         BaseDie[] dice;
         Activity context;
 
-        public DiceLayoutAdapter(Activity context, BaseDie[] dice) : base() {
+        public ResultsLayoutAdapter(Activity context, BaseDie[] dice) : base() {
             this.context = context;
             this.dice = dice;
         }
@@ -49,14 +49,14 @@ namespace DiceRoller.Droid
             View view = convertView;
             if (view == null)
             {
-                view = context.LayoutInflater.Inflate(Resource.Layout.List_DieItem, null);
+                view = context.LayoutInflater.Inflate(Resource.Layout.Grid_ResultItem, null);
             }
-            var _dieName = view.FindViewById<TextView>(Resource.Id.Dice_Name);
-            var _dieIcon = view.FindViewById<ImageView>(Resource.Id.Dice_Icon);
-            var _dieAmount = view.FindViewById<EditText>(Resource.Id.Dice_Amount);
-            _dieName.Text = dice[position].Name;
-            //To be implemented
-            //_dieIcon.SetImageDrawable(null);
+            
+            view.FindViewById<TextView>(Resource.Id.Result_DiceName);
+            view.FindViewById<ImageView>(Resource.Id.Result_Icon);
+            view.FindViewById<TextView>(Resource.Id.Result_DiceSide);
+            //view.FindViewById<TextView>(Resource.Id.Dice_Name).Text = dice[position].Name;
+            //view.FindViewById<ImageView>(Resource.Id.diceIcon).SetImageIcon()
             return view;
         }
     }
