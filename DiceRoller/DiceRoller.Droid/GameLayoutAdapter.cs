@@ -16,10 +16,10 @@ namespace DiceRoller.Droid
 {
     public class GameLayoutAdapter : BaseAdapter<BaseGame>
     {
-        BaseGame[] games;
+        List<BaseGame> games;
         Activity context;
 
-        public GameLayoutAdapter(Activity context, BaseGame[] games) : base()
+        public GameLayoutAdapter(Activity context, List<BaseGame> games) : base()
         {
             this.context = context;
             this.games = games;
@@ -36,7 +36,7 @@ namespace DiceRoller.Droid
         {
             get
             {
-                return games.Length;
+                return games.Count;
             }
         }
 

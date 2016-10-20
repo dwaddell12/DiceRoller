@@ -8,6 +8,7 @@ using Android.Widget;
 using Android.OS;
 using DiceRoller.Models;
 using DiceRoller.Models.Dice;
+using System.Collections.Generic;
 
 namespace DiceRoller.Droid
 {
@@ -48,9 +49,6 @@ namespace DiceRoller.Droid
         /// </summary>
         private void InitializeViews()
         {
-            //LoadGames();
-            //SelectFirstGame();
-            //
             InitializeSelectorFragment();
             InitializeResultFragment();
         }
@@ -70,7 +68,7 @@ namespace DiceRoller.Droid
         /// </summary>
         private void CreateGenericDieList()
         {
-            GenericDie[] dice = RollHelper.InitializeGenericDice();
+            List<BaseDie> dice = DiceHelper.InitializeGenericDice();
             dieList = FindViewById<ListView>(Resource.Id.Die_List);
 
             dieList.Adapter = new DiceLayoutAdapter(this, dice);

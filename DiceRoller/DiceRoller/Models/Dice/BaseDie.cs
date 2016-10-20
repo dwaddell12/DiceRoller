@@ -46,6 +46,14 @@ namespace DiceRoller.Models.Dice
             result = Values[rand.Next(lowerBound, upperBound)];
             return result;
         }
+
+        /// <summary>
+        /// An empty constructor for a die object
+        /// </summary>
+        public BaseDie()
+        {
+
+        }
         /// <summary>
         /// A constructor for a die object
         /// </summary>

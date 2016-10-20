@@ -20,6 +20,9 @@ namespace DiceRoller.Droid
         Spinner _gameSpinner;
         ListView _dieList;
         Button _rollButton;
+        List<BaseDie> _dice;
+        List<BaseGame> _games;
+
         private const string CURRENT_POSITION = "Current Position";
         private const string RESULTS = "Results";
         int _currentPosition;
@@ -31,12 +34,14 @@ namespace DiceRoller.Droid
             _gameSpinner = Activity.FindViewById<Spinner>(Resource.Id.Game_Spinner);
             _dieList = Activity.FindViewById<ListView>(Resource.Id.Die_List);
             _rollButton = Activity.FindViewById<Button>(Resource.Id.Roll_Button);
-            
-            GenericDie[] dice = RollHelper.InitializeGenericDice();
 
-            _gameSpinner.Adapter = new GameLayoutAdapter(Activity, new BaseGame[] { new GenericGame() { Name = "D&D" } } );
-            _dieList.Adapter = new DiceLayoutAdapter(Activity, dice);
-            //var resultsFrame = Activity.FindViewById<View>(Resource.Id.Results_FrameLayout);
+            _dice = DiceHelper.InitializeGenericDice();
+
+            _games = new List<BaseGame>(DiceHelper.InitializeGames());
+            _gameSpinner.Adapter = new GameLayoutAdapter(Activity, _games);
+            _gameSpinner.ItemSelected += _gameSpinner_ItemSelected;
+            _gameSpinner.SetSelection(0);
+            _rollButton.Click += _rollButton_Click;
             if (savedInstanceState != null)
             {
                 _currentPosition = savedInstanceState.GetInt(CURRENT_POSITION, 0);
@@ -46,11 +51,29 @@ namespace DiceRoller.Droid
             if (_isDualPane)
             {
                 _dieList.ChoiceMode = ChoiceMode.Single;
-                ShowDetails(_currentPosition);
+                ShowDetails();
             }
         }
 
-        private void ShowDetails(int pos)
+        private void _rollButton_Click(object sender, EventArgs e)
+        {
+            List<BaseDie> diceToRoll = new List<BaseDie>();
+            for (int i = 0; i < _dieList.Count; i++)
+            {
+                DiceLayoutAdapter adapter = (DiceLayoutAdapter) _dieList.Adapter;
+                var currentDie = adapter.GetDieItem(i);
+                var numberField = adapter.GetDiceAmount(i);
+                _rollButton.Text += (currentDie.Name + numberField + " ").ToString();
+
+            }
+        }
+
+        private void _gameSpinner_ItemSelected(object sender, AdapterView.ItemSelectedEventArgs e)
+        {
+            _dieList.Adapter = new DiceLayoutAdapter(Activity, _games[e.Position].Dice);
+        }
+       
+        private void ShowDetails()
         {
             if (_isDualPane)
             {
@@ -59,10 +82,10 @@ namespace DiceRoller.Droid
                 //_dieList.SetItemChecked(pos, true);
                 // Check what fragment is shown, replace if needed.
                 var details = FragmentManager.FindFragmentById(Resource.Id.ResultItem_Layout) as ResultsFragment;
-                if (details == null || details.ShownResults != pos)
+                if (details == null)
                 {
                     // Make new fragment to show this selection.
-                    details = ResultsFragment.NewInstance(pos);
+                    details = ResultsFragment.NewInstance();
                     // Execute a transaction, replacing any existing
                     // fragment with this one inside the frame.
                     var ft = FragmentManager.BeginTransaction();
@@ -77,7 +100,6 @@ namespace DiceRoller.Droid
                 // the dialog fragment with selected text.
                 var intent = new Intent();
                 intent.SetClass(Activity, typeof(ResultsActivity));
-                intent.PutExtra(CURRENT_POSITION, pos);
                 StartActivity(intent);
             }
         }

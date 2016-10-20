@@ -18,11 +18,9 @@ namespace DiceRoller.Droid
         TextView resultText;
         private const string CURRENT_POSITION = "Current Position";
         private const string RESULTS = "Results";
-        public static ResultsFragment NewInstance(int pos)
+        public static ResultsFragment NewInstance()
         {
-            var detailsFrag = new ResultsFragment { Arguments = new Bundle() };
-            detailsFrag.Arguments.PutInt(CURRENT_POSITION, pos);
-            return detailsFrag;
+            return new ResultsFragment { Arguments = new Bundle() };
         }
 
         public int ShownResults
@@ -50,7 +48,7 @@ namespace DiceRoller.Droid
                 // Currently in a layout without a container, so no reason to create our view.
                 return null;
             }
-            var grid = new GridView(Activity);
+            //var grid = new GridView(Activity);
             //grid.Adapter
             //var text = new TextView(Activity);
             var padding = Convert.ToInt32(TypedValue.ApplyDimension(ComplexUnitType.Dip, 4, Activity.Resources.DisplayMetrics));
@@ -58,7 +56,7 @@ namespace DiceRoller.Droid
             //text.TextSize = 24;
             //text.Text = Shakespeare.Dialogue[ShownPlayId];
             //scroller.AddView(text);
-            return grid;
+            return container;
         }
     }
 }

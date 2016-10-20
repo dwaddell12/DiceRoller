@@ -9,6 +9,11 @@ namespace DiceRoller.Models.Dice
     /// </summary>
     public class GenericDie : BaseDie
     {
+
+        public GenericDie() : base()
+        {
+
+        }
         /// <summary>
         /// 
         /// </summary>

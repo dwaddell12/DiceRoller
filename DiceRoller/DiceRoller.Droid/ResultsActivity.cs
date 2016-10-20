@@ -23,7 +23,7 @@ namespace DiceRoller.Droid
             base.OnCreate(bundle);
             var index = Intent.Extras.GetInt(RESULTS, 0);
 
-            var details = ResultsFragment.NewInstance(index);
+            var details = ResultsFragment.NewInstance();
             // DetailsFragment.NewInstance is a factory method to create a Details Fragment
             var fragmentTransaction = FragmentManager.BeginTransaction();
             fragmentTransaction.Add(Android.Resource.Id.Content, details);
