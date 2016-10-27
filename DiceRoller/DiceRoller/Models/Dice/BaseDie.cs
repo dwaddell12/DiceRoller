@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 using DiceRoller.Models;
+using DiceRoller.Models.Side;
 
 namespace DiceRoller.Models.Dice
 {
@@ -21,7 +22,7 @@ namespace DiceRoller.Models.Dice
         /// <summary>
         /// The result of the value of the die side.
         /// </summary>
-        private string result;
+        private RollResult result;
         /// <summary>
         /// The random value for getting the result.
         /// </summary>
@@ -29,38 +30,37 @@ namespace DiceRoller.Models.Dice
         /// <summary>
         /// The value at the position represented by side of the die.
         /// </summary>
-        public string[] Values { get; set; }
+        public List<BaseSide> Sides { get; set; }
         /// <summary>
         /// The property to show how many sides a generic die has.
         /// </summary>
-        public int NumberOfSides { get { return Values.Length; } }
+        public int NumberOfSides { get { return Sides.Count; } }
 
         /// <summary>
         /// Rolls a die that will return one of the die's values.
         /// </summary>
         /// <returns>The result of the die.</returns>
-        public object RollDie()
+        public RollResult RollDie()
         {
             rand = new Random();
             upperBound = NumberOfSides;
-            result = Values[rand.Next(lowerBound, upperBound)];
+            result = new RollResult(Sides[rand.Next(lowerBound, upperBound)]);
             return result;
         }
-
         /// <summary>
         /// An empty constructor for a die object
         /// </summary>
         public BaseDie()
         {
-
+            Sides = new List<BaseSide>();
         }
         /// <summary>
         /// A constructor for a die object
         /// </summary>
         /// <param name="values">An array of values for the die.</param>
-        public BaseDie(string[] values)
+        public BaseDie(List<BaseSide> sides)
         {
-            Values = values;
+            Sides = sides;
         }
     }
 }

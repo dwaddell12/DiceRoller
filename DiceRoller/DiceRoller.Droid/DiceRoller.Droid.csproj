@@ -45,6 +45,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="GameLayoutAdapter.cs" />
+    <Compile Include="JavaObjectWrapper.cs" />
     <Compile Include="ResultsLayoutAdapter.cs" />
     <Compile Include="DiceLayoutAdapter.cs" />
     <Compile Include="ResultsActivity.cs" />

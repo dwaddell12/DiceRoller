@@ -11,23 +11,24 @@ using Android.Views;
 using Android.Widget;
 
 using DiceRoller.Models.Dice;
+using DiceRoller.Models;
 
 namespace DiceRoller.Droid
 {
-    public class ResultsLayoutAdapter : BaseAdapter<BaseDie>
+    public class ResultsLayoutAdapter : BaseAdapter<RollResult>
     {
-        List<BaseDie> dice;
+        List<RollResult> results;
         Activity context;
 
-        public ResultsLayoutAdapter(Activity context, List<BaseDie> dice) : base() {
-            this.context = context;
-            this.dice = dice;
+        public ResultsLayoutAdapter(Activity _context, List<RollResult> _results) : base() {
+            context = _context;
+            results = _results;
         }
-        public override BaseDie this[int position]
+        public override RollResult this[int position]
         {
             get
             {
-                return dice[position];
+                return results[position];
             }
         }
 
@@ -35,7 +36,7 @@ namespace DiceRoller.Droid
         {
             get
             {
-                return dice.Count;
+                return results.Count;
             }
         }
 
@@ -52,11 +53,13 @@ namespace DiceRoller.Droid
                 view = context.LayoutInflater.Inflate(Resource.Layout.Grid_ResultItem, null);
             }
             
-            view.FindViewById<TextView>(Resource.Id.Result_DiceName);
-            view.FindViewById<ImageView>(Resource.Id.Result_Icon);
-            view.FindViewById<TextView>(Resource.Id.Result_DiceSide);
-            //view.FindViewById<TextView>(Resource.Id.Dice_Name).Text = dice[position].Name;
-            //view.FindViewById<ImageView>(Resource.Id.diceIcon).SetImageIcon()
+            TextView name = view.FindViewById<TextView>(Resource.Id.Result_DiceName);
+            ImageView icon = view.FindViewById<ImageView>(Resource.Id.Result_Icon);
+            TextView side = view.FindViewById<TextView>(Resource.Id.Result_DiceSide);
+            RollResult result = results[0];
+
+            name.Text = result.Die.Name;
+            side.Text = result.Side.Name;
             return view;
         }
     }

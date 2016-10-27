@@ -10,6 +10,7 @@ using Android.Runtime;
 using Android.Util;
 using Android.Views;
 using Android.Widget;
+using DiceRoller.Models;
 using DiceRoller.Models.Dice;
 using DiceRoller.Models.Game;
 
@@ -22,10 +23,9 @@ namespace DiceRoller.Droid
         Button _rollButton;
         List<BaseDie> _dice;
         List<BaseGame> _games;
-
-        private const string CURRENT_POSITION = "Current Position";
+        LinearLayout diceBagView;
+        
         private const string RESULTS = "Results";
-        int _currentPosition;
         bool _isDualPane;
 
         public override void OnActivityCreated(Bundle savedInstanceState)
@@ -34,25 +34,53 @@ namespace DiceRoller.Droid
             _gameSpinner = Activity.FindViewById<Spinner>(Resource.Id.Game_Spinner);
             _dieList = Activity.FindViewById<ListView>(Resource.Id.Die_List);
             _rollButton = Activity.FindViewById<Button>(Resource.Id.Roll_Button);
-
+            
+            diceBagView = Activity.FindViewById<LinearLayout>(Resource.Id.Dice_Layout);
             _dice = DiceHelper.InitializeGenericDice();
+            _dieList.ItemClick += _dieList_ItemClick1;
+            _dieList.ItemSelected += _dieList_ItemSelected;
+            diceBagView.AddView(new Button(Activity) { Text = "Item One" }, 0);
+            diceBagView.AddView(new Button(Activity) { Text = "Item Two" }, 0);
+            diceBagView.AddView(new Button(Activity) { Text = "Item Three" }, 0);
+            diceBagView.AddView(new Button(Activity) { Text = "Item Four" }, 0);
+            diceBagView.AddView(new Button(Activity) { Text = "Item Five" }, 0);
+            diceBagView.AddView(new Button(Activity) { Text = "Item Six" }, 0);
+            diceBagView.AddView(new Button(Activity) { Text = "Item Seven" }, 0);
+            diceBagView.AddView(new Button(Activity) { Text = "Item Eight" }, 0);
 
             _games = new List<BaseGame>(DiceHelper.InitializeGames());
             _gameSpinner.Adapter = new GameLayoutAdapter(Activity, _games);
             _gameSpinner.ItemSelected += _gameSpinner_ItemSelected;
             _gameSpinner.SetSelection(0);
             _rollButton.Click += _rollButton_Click;
-            if (savedInstanceState != null)
-            {
-                _currentPosition = savedInstanceState.GetInt(CURRENT_POSITION, 0);
-            }
+            
+            
             var detailsFrame = Activity.FindViewById<View>(Resource.Id.Results_FrameLayout);
             _isDualPane = detailsFrame != null && detailsFrame.Visibility == ViewStates.Visible;
             if (_isDualPane)
             {
-                _dieList.ChoiceMode = ChoiceMode.Single;
                 ShowDetails();
             }
+        }
+
+        private void _dieList_ItemClick1(object sender, AdapterView.ItemClickEventArgs e)
+        {
+        }
+
+        private void _dieList_ItemSelected(object sender, AdapterView.ItemSelectedEventArgs e)
+        {
+            Button button = new Button(Activity);
+            var item = e.Parent.GetItemAtPosition(e.Position);
+            button.Text = "D2";
+            diceBagView.AddView(button, 0);
+        }
+
+        private void _dieList_ItemClick(object sender, AdapterView.ItemClickEventArgs e)
+        {
+            Button button = new Button(Activity);
+            var item = e.Parent.GetItemAtPosition(e.Position);
+            button.Text = "D2";
+            diceBagView.AddView(button, 0);
         }
 
         private void _rollButton_Click(object sender, EventArgs e)
@@ -61,9 +89,11 @@ namespace DiceRoller.Droid
             for (int i = 0; i < _dieList.Count; i++)
             {
                 DiceLayoutAdapter adapter = (DiceLayoutAdapter) _dieList.Adapter;
+                //var view = adapter.GetView(i,  _dieList);
                 var currentDie = adapter.GetDieItem(i);
-                var numberField = adapter.GetDiceAmount(i);
-                _rollButton.Text += (currentDie.Name + numberField + " ").ToString();
+                //var numberField = view.FindViewById<EditText>(Resource.Id.Dice_Amount);
+                //var numberField = adapter.GetDiceAmount(i);
+                //_rollButton.Text += (currentDie.Name + " "+ numberField.Text + " ").ToString();
 
             }
         }

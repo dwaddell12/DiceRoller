@@ -15,9 +15,34 @@
         android:layout_height="match_parent"
         android:id="@+id/Die_List"
         android:layout_weight="1" />
-    <Button
-        android:text="&quot;Roll&quot;"
+    <HorizontalScrollView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/Roll_Button" />
+        android:id="@+id/Dice_Scroller">
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:id="@+id/Dice_Layout" />
+    </HorizontalScrollView>
+    <LinearLayout
+        android:orientation="horizontal"
+        android:minWidth="25px"
+        android:minHeight="25px"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/Selector_Controls">
+        <Button
+            android:text="Clear"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:id="@+id/Clear_Button"
+            android:layout_weight="1" />
+        <Button
+            android:text="Roll"
+            android:id="@+id/Roll_Button"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_weight="1" />
+    </LinearLayout>
 </LinearLayout>

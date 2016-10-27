@@ -10,23 +10,21 @@ using Android.Runtime;
 using Android.Util;
 using Android.Views;
 using Android.Widget;
+using DiceRoller.Models;
+using DiceRoller.Models.Side;
 
 namespace DiceRoller.Droid
 {
     public class ResultsFragment : Fragment
     {
-        TextView resultText;
-        private const string CURRENT_POSITION = "Current Position";
+        TextView _resultName;
+        TextView _resultSide;
         private const string RESULTS = "Results";
         public static ResultsFragment NewInstance()
         {
             return new ResultsFragment { Arguments = new Bundle() };
         }
-
-        public int ShownResults
-        {
-            get { return Arguments.GetInt(CURRENT_POSITION, 0); }
-        }
+        
 
         public override void OnActivityCreated(Bundle savedInstanceState)
         {
@@ -36,7 +34,6 @@ namespace DiceRoller.Droid
         public override void OnCreate(Bundle savedInstanceState)
         {
             base.OnCreate(savedInstanceState);
-
         }
 
         public override View OnCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
@@ -48,14 +45,10 @@ namespace DiceRoller.Droid
                 // Currently in a layout without a container, so no reason to create our view.
                 return null;
             }
-            //var grid = new GridView(Activity);
-            //grid.Adapter
-            //var text = new TextView(Activity);
-            var padding = Convert.ToInt32(TypedValue.ApplyDimension(ComplexUnitType.Dip, 4, Activity.Resources.DisplayMetrics));
-            //text.SetPadding(padding, padding, padding, padding);
-            //text.TextSize = 24;
-            //text.Text = Shakespeare.Dialogue[ShownPlayId];
-            //scroller.AddView(text);
+            GridView grid = container.FindViewById<GridView>(Resource.Id.Result_Grid);
+            List<RollResult> results = new List<RollResult>();
+            ResultsLayoutAdapter adapter = new ResultsLayoutAdapter(Activity, results);
+            grid.Adapter = adapter;
             return container;
         }
     }

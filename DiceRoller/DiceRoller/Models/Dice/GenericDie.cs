@@ -1,4 +1,5 @@
-﻿using System;
+﻿using DiceRoller.Models.Side;
+using System;
 using System.Collections.Generic;
 using System.Text;
 
@@ -14,11 +15,8 @@ namespace DiceRoller.Models.Dice
         {
 
         }
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="values"></param>
-        public GenericDie(string[] values) : base(values)
+        
+        public GenericDie(List<BaseSide> sides) : base(sides)
         {
 
         }

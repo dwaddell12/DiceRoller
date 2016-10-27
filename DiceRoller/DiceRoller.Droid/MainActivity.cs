@@ -33,7 +33,6 @@ namespace DiceRoller.Droid
 		{
 			base.OnCreate (bundle);
 			SetContentView (Resource.Layout.Activity_Main);
-            FragmentTransaction fragTransact = FragmentManager.BeginTransaction();
             /*
             dieResult = FindViewById<TextView>(Resource.Id.Result_DiceSide);
             if(bundle != null)
@@ -68,6 +67,7 @@ namespace DiceRoller.Droid
         /// </summary>
         private void CreateGenericDieList()
         {
+            /*
             List<BaseDie> dice = DiceHelper.InitializeGenericDice();
             dieList = FindViewById<ListView>(Resource.Id.Die_List);
 
@@ -76,6 +76,7 @@ namespace DiceRoller.Droid
                 var result = dice[args.Position].RollDie();
                 dieResult.Text = result.ToString();
             };
+            */
         }
         /// <summary>
         /// Collects pertainant data from the MainActivity

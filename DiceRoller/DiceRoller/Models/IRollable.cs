@@ -13,6 +13,6 @@ namespace DiceRoller.Models
         /// 
         /// </summary>
         /// <returns></returns>
-        object RollDie();
+        RollResult RollDie();
     }
 }

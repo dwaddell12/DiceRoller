@@ -11,7 +11,7 @@ namespace DiceRoller.Models.Game
 
         public BaseGame()
         {
-            this.Dice = new List<BaseDie>();
+            Dice = new List<BaseDie>();
         }
     }
 }

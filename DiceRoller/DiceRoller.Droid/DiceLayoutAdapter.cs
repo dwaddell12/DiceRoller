@@ -19,10 +19,6 @@ namespace DiceRoller.Droid
     {
         List<BaseDie> dice;
         Activity context;
-        TextView _dieName;
-        ImageView _dieIcon;
-        EditText _dieAmount;
-
 
         public DiceLayoutAdapter(Activity context, List<BaseDie> dice) : base() {
             this.context = context;
@@ -54,37 +50,46 @@ namespace DiceRoller.Droid
             return position;
         }
 
-        public int GetDiceAmount(int position)
+        //public int GetDiceAmount(int position)
+        //{
+        //    var view = GetView(position, null, null);
+        //    EditText _dieAmount = view.FindViewById<EditText>(Resource.Id.Dice_Amount);
+        //    string amountEntry = _dieAmount.Text;
+        //    if (amountEntry == "" || amountEntry == null)
+        //    {
+        //        return 0;
+        //    }
+        //    return int.Parse(amountEntry);
+        //}
+
+        private class ViewHolder : Java.Lang.Object
         {
-            
-            if(_dieAmount.Text == "")
-            {
-                return 0;
-            }
-            return int.Parse(_dieAmount.Text);
+            internal TextView dieName;
+            internal ImageView dieIcon;
+            internal EditText dieAmount;
         }
 
         public override View GetView(int position, View convertView, ViewGroup parent)
         {
-            View view = convertView;
-            if (view == null)
+            ViewHolder holder = null;
+            if (convertView == null)
             {
-                view = context.LayoutInflater.Inflate(Resource.Layout.List_DieItem, null);
+                holder = new ViewHolder();
+                convertView = context.LayoutInflater.Inflate(Resource.Layout.List_DieItem, null);
+                holder.dieName = convertView.FindViewById<TextView>(Resource.Id.Dice_Name);
+                holder.dieIcon = convertView.FindViewById<ImageView>(Resource.Id.Dice_Icon);
+                holder.dieAmount = convertView.FindViewById<EditText>(Resource.Id.Dice_Amount);
+                convertView.Tag = holder;
+                //listDice.Add(position, convertView);
             }
-            _dieName = view.FindViewById<TextView>(Resource.Id.Dice_Name);
-            _dieIcon = view.FindViewById<ImageView>(Resource.Id.Dice_Icon);
-            _dieAmount = view.FindViewById<EditText>(Resource.Id.Dice_Amount);
-
-            _dieName.Text = dice[position].Name;
-            _dieAmount.TextChanged += _dieAmount_TextChanged;
+            else
+            {
+                holder = (ViewHolder) convertView.Tag;
+            }
+            holder.dieName.Text = dice[position].Name;
             //To be implemented
             //_dieIcon.SetImageDrawable(null);
-            return view;
-        }
-
-        private void _dieAmount_TextChanged(object sender, Android.Text.TextChangedEventArgs e)
-        {
-            
+            return convertView;
         }
     }
 }
