@@ -34,5 +34,7 @@
         android:layout_marginLeft="20px"
         android:layout_gravity="center_vertical"
         android:hint="0"
-        android:maxLength="2" />
+        android:maxLength="2"
+        xmlns:tools="http://schemas.android.com/tools"
+        tools:visibility="gone" />
 </LinearLayout>

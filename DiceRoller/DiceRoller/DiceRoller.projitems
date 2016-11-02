@@ -14,7 +14,6 @@
     <Compile Include="$(MSBuildThisFileDirectory)Models\Dice\GenericDie.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Models\Game\BaseGame.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Models\Game\GenericGame.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Models\IRollable.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)DiceHelper.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Models\RollResult.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Models\Side\BaseSide.cs" />

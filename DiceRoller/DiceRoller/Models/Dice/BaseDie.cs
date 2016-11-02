@@ -9,7 +9,7 @@ namespace DiceRoller.Models.Dice
     /// <summary>
     /// A generic die is a common die who's sides are gradually iterating numbers
     /// </summary>
-    public abstract class BaseDie : BaseObject, IRollable
+    public abstract class BaseDie : BaseObject
     {
         /// <summary>
         /// The lower bound of the value of the die sides.
@@ -23,10 +23,10 @@ namespace DiceRoller.Models.Dice
         /// The result of the value of the die side.
         /// </summary>
         private RollResult result;
-        /// <summary>
-        /// The random value for getting the result.
-        /// </summary>
-        private Random rand;
+
+        private static readonly Random random = new Random();
+        private static readonly object syncLock = new object();
+
         /// <summary>
         /// The value at the position represented by side of the die.
         /// </summary>
@@ -40,13 +40,20 @@ namespace DiceRoller.Models.Dice
         /// Rolls a die that will return one of the die's values.
         /// </summary>
         /// <returns>The result of the die.</returns>
-        public RollResult RollDie()
+        public RollResult RollDie
         {
-            rand = new Random();
-            upperBound = NumberOfSides;
-            result = new RollResult(Sides[rand.Next(lowerBound, upperBound)]);
-            return result;
+            get
+            {
+                lock (syncLock)
+                {
+                    upperBound = NumberOfSides;
+                    result = new RollResult(Sides[random.Next(lowerBound, upperBound)]);
+                    return result;
+                }
+                
+            }
         }
+
         /// <summary>
         /// An empty constructor for a die object
         /// </summary>

@@ -13,7 +13,7 @@ namespace DiceRoller
             List<RollResult> results = new List<RollResult>();
             foreach (BaseDie die in dice)
             {
-                RollResult result = new RollResult(die.RollDie().Side);
+                RollResult result = new RollResult(die);
                 results.Add(result);
             }
             return results;

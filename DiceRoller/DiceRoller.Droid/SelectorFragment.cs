@@ -18,41 +18,79 @@ namespace DiceRoller.Droid
 {
     public class SelectorFragment : Fragment
     {
-        Spinner _gameSpinner;
-        ListView _dieList;
-        Button _rollButton;
-        List<BaseDie> _dice;
-        List<BaseGame> _games;
+        Spinner gameSpinner;
+        ListView diceList;
+        Button rollButton;
+        Button clearButton;
+        List<BaseDie> dice, diceBag;
+        List<BaseGame> games;
         LinearLayout diceBagView;
-        
+        long lastClickTimer = 0;
+
         private const string RESULTS = "Results";
         bool _isDualPane;
 
         public override void OnActivityCreated(Bundle savedInstanceState)
         {
             base.OnActivityCreated(savedInstanceState);
-            _gameSpinner = Activity.FindViewById<Spinner>(Resource.Id.Game_Spinner);
-            _dieList = Activity.FindViewById<ListView>(Resource.Id.Die_List);
-            _rollButton = Activity.FindViewById<Button>(Resource.Id.Roll_Button);
-            
-            diceBagView = Activity.FindViewById<LinearLayout>(Resource.Id.Dice_Layout);
-            _dice = DiceHelper.InitializeGenericDice();
-            _dieList.ItemClick += _dieList_ItemClick1;
-            _dieList.ItemSelected += _dieList_ItemSelected;
-            diceBagView.AddView(new Button(Activity) { Text = "Item One" }, 0);
-            diceBagView.AddView(new Button(Activity) { Text = "Item Two" }, 0);
-            diceBagView.AddView(new Button(Activity) { Text = "Item Three" }, 0);
-            diceBagView.AddView(new Button(Activity) { Text = "Item Four" }, 0);
-            diceBagView.AddView(new Button(Activity) { Text = "Item Five" }, 0);
-            diceBagView.AddView(new Button(Activity) { Text = "Item Six" }, 0);
-            diceBagView.AddView(new Button(Activity) { Text = "Item Seven" }, 0);
-            diceBagView.AddView(new Button(Activity) { Text = "Item Eight" }, 0);
+            gameSpinner = Activity.FindViewById<Spinner>(Resource.Id.Game_Spinner);
+            diceList = Activity.FindViewById<ListView>(Resource.Id.Die_List);
+            rollButton = Activity.FindViewById<Button>(Resource.Id.Roll_Button);
+            clearButton = Activity.FindViewById<Button>(Resource.Id.Clear_Button);
+            diceBag = new List<BaseDie>();
+            diceList.ItemClick += (dieListSender, adapterArgs) =>
+            {
 
-            _games = new List<BaseGame>(DiceHelper.InitializeGames());
-            _gameSpinner.Adapter = new GameLayoutAdapter(Activity, _games);
-            _gameSpinner.ItemSelected += _gameSpinner_ItemSelected;
-            _gameSpinner.SetSelection(0);
-            _rollButton.Click += _rollButton_Click;
+                DiceLayoutAdapter adapter = (DiceLayoutAdapter)diceList.Adapter;
+                BaseDie die = adapter.GetDieItem(adapterArgs.Position);
+
+                Button dieButton;
+                //I use the Id from the AdapterArgs as a tag for recognizing buttons
+                //in the horizontal scroll at the bottom.
+                long id = adapterArgs.Id;
+                if (diceBagView.FindViewWithTag(id) != null)
+                {
+                    dieButton = (Button)diceBagView.FindViewWithTag(id);
+                }
+                else
+                {
+                    dieButton = new Button(Activity);
+                    dieButton.Tag = id;
+                    diceBagView.AddView(dieButton, 0);
+                }
+
+                dieButton.Text = die.Name + " x" + (diceBag.Where(m => m.Name == die.Name).Count() + 1);
+                diceBag.Add(die);
+
+                dieButton.Click += (buttonSender, buttonArgs) =>
+                {
+                    //This lastClicked timer is implemented as a result of multiple clicks
+                    //being registered sequentially. Stops clicks before 100ms from registering.
+                    if (SystemClock.ElapsedRealtime() - lastClickTimer > 100)
+                    {
+                        lastClickTimer = SystemClock.ElapsedRealtime();
+                        diceBag.Remove(die);
+                        if (diceBag.Contains(die))
+                        {
+                            dieButton.Text = die.Name + " x" + (diceBag.Where(m => m.Name == die.Name).Count());
+                        }
+                        else
+                        {
+                            diceBagView.RemoveView(dieButton);
+                        }
+                    }
+                };
+            };
+
+            diceBagView = Activity.FindViewById<LinearLayout>(Resource.Id.Dice_Layout);
+            dice = DiceHelper.InitializeGenericDice();
+
+            games = new List<BaseGame>(DiceHelper.InitializeGames());
+            gameSpinner.Adapter = new GameLayoutAdapter(Activity, games);
+            gameSpinner.ItemSelected += _gameSpinner_ItemSelected;
+            gameSpinner.SetSelection(0);
+            rollButton.Click += _rollButton_Click;
+            clearButton.Click += ClearButton_Click;
             
             
             var detailsFrame = Activity.FindViewById<View>(Resource.Id.Results_FrameLayout);
@@ -63,44 +101,30 @@ namespace DiceRoller.Droid
             }
         }
 
-        private void _dieList_ItemClick1(object sender, AdapterView.ItemClickEventArgs e)
+        private void ClearButton_Click(object sender, EventArgs e)
         {
-        }
-
-        private void _dieList_ItemSelected(object sender, AdapterView.ItemSelectedEventArgs e)
-        {
-            Button button = new Button(Activity);
-            var item = e.Parent.GetItemAtPosition(e.Position);
-            button.Text = "D2";
-            diceBagView.AddView(button, 0);
-        }
-
-        private void _dieList_ItemClick(object sender, AdapterView.ItemClickEventArgs e)
-        {
-            Button button = new Button(Activity);
-            var item = e.Parent.GetItemAtPosition(e.Position);
-            button.Text = "D2";
-            diceBagView.AddView(button, 0);
+            diceBag = new List<BaseDie>();
+            diceBagView.RemoveAllViews();
+            rollButton.Text = "Roll";
         }
 
         private void _rollButton_Click(object sender, EventArgs e)
         {
-            List<BaseDie> diceToRoll = new List<BaseDie>();
-            for (int i = 0; i < _dieList.Count; i++)
+            for (int i = 0; i < diceList.Count; i++)
             {
-                DiceLayoutAdapter adapter = (DiceLayoutAdapter) _dieList.Adapter;
-                //var view = adapter.GetView(i,  _dieList);
-                var currentDie = adapter.GetDieItem(i);
-                //var numberField = view.FindViewById<EditText>(Resource.Id.Dice_Amount);
-                //var numberField = adapter.GetDiceAmount(i);
-                //_rollButton.Text += (currentDie.Name + " "+ numberField.Text + " ").ToString();
+                rollButton.Text = "";
+                List<RollResult> results = RollHelper.RollCollectedDice(diceBag);
+                foreach (RollResult result in results)
+                {
+                    rollButton.Text += result.Side.Name + " from " + result.Die.Name + "\n";
+                }
 
             }
         }
 
         private void _gameSpinner_ItemSelected(object sender, AdapterView.ItemSelectedEventArgs e)
         {
-            _dieList.Adapter = new DiceLayoutAdapter(Activity, _games[e.Position].Dice);
+            diceList.Adapter = new DiceLayoutAdapter(Activity, games[e.Position].Dice);
         }
        
         private void ShowDetails()

@@ -102,7 +102,7 @@ namespace DiceRoller
             
             GenericDie die = new GenericDie();
             die.Sides = new List<BaseSide>();
-            for (int i = 0; i < 2; i++)
+            for (int i = 0; i < 3; i++)
             {
                 GenericSide side = new GenericSide(die);
                 side.Id = i;
@@ -125,12 +125,12 @@ namespace DiceRoller
         {
             GenericDie die = new GenericDie();
             die.Sides = new List<BaseSide>();
-            for (int i = 0; i < 9; i++)
+            for (int i = 0; i < 10; i++)
             {
                 GenericSide side = new GenericSide(die);
                 side.Id = i;
                 side.Name = (i+1).ToString();
-                if (i == 9)
+                if (i == 10)
                 {
                     side.IsExploding = true;
                 }
