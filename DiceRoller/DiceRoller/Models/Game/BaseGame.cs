@@ -5,7 +5,7 @@ using DiceRoller.Models.Dice;
 
 namespace DiceRoller.Models.Game
 {
-    public abstract class BaseGame : BaseObject
+    public class BaseGame : BaseObject
     {
         public List<BaseDie> Dice { get; set; }
 

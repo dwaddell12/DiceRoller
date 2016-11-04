@@ -22,7 +22,7 @@
         android:text="&quot;Sample Text&quot;"
         android:layout_gravity="center_vertical"
         android:layout_weight="2" />
-        <!--
+<!--
     <EditText
         android:inputType="number"
         android:layout_width="wrap_content"

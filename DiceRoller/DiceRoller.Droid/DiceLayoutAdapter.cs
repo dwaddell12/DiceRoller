@@ -66,7 +66,6 @@ namespace DiceRoller.Droid
         {
             internal TextView dieName;
             internal ImageView dieIcon;
-            internal EditText dieAmount;
         }
 
         public override View GetView(int position, View convertView, ViewGroup parent)
@@ -78,14 +77,10 @@ namespace DiceRoller.Droid
                 convertView = context.LayoutInflater.Inflate(Resource.Layout.List_DieItem, null);
                 holder.dieName = convertView.FindViewById<TextView>(Resource.Id.Dice_Name);
                 holder.dieIcon = convertView.FindViewById<ImageView>(Resource.Id.Dice_Icon);
-                holder.dieAmount = convertView.FindViewById<EditText>(Resource.Id.Dice_Amount);
                 convertView.Tag = holder;
-                //listDice.Add(position, convertView);
             }
             else
-            {
                 holder = (ViewHolder) convertView.Tag;
-            }
             holder.dieName.Text = dice[position].Name;
             //To be implemented
             //_dieIcon.SetImageDrawable(null);

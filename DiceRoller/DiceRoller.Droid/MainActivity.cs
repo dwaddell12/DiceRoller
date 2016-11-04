@@ -16,16 +16,6 @@ namespace DiceRoller.Droid
 	public class MainActivity : Activity
 	{
         /// <summary>
-        /// The result of the dice roll
-        /// </summary>
-        private const string RESULTS = "Results";
-
-        private bool _isDualPane;
-        private ListView dieList;
-        private TextView dieResult;
-        private ResultsFragment resultFrag;
-
-        /// <summary>
         /// 
         /// </summary>
         /// <param name="bundle"></param>
@@ -33,35 +23,7 @@ namespace DiceRoller.Droid
 		{
 			base.OnCreate (bundle);
 			SetContentView (Resource.Layout.Activity_Main);
-            /*
-            dieResult = FindViewById<TextView>(Resource.Id.Result_DiceSide);
-            if(bundle != null)
-            {
-                dieResult.Text = bundle.GetString(RESULTS);
-            }
-            */
-            InitializeViews();
         }
-
-        /// <summary>
-        /// Sets up the views of the MainActivity.
-        /// </summary>
-        private void InitializeViews()
-        {
-            InitializeSelectorFragment();
-            InitializeResultFragment();
-        }
-
-        private void InitializeSelectorFragment()
-        {
-
-        }
-
-        private void InitializeResultFragment()
-        {
-
-        }
-
         /// <summary>
         /// Sets up a list view that is populated with generic dice that display a result when tapped.
         /// </summary>

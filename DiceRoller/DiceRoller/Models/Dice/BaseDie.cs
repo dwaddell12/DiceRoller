@@ -3,13 +3,14 @@ using System.Collections.Generic;
 using System.Text;
 using DiceRoller.Models;
 using DiceRoller.Models.Side;
+using DiceRoller.Models.Game;
 
 namespace DiceRoller.Models.Dice
 {
     /// <summary>
     /// A generic die is a common die who's sides are gradually iterating numbers
     /// </summary>
-    public abstract class BaseDie : BaseObject
+    public class BaseDie : BaseObject
     {
         /// <summary>
         /// The lower bound of the value of the die sides.
@@ -31,6 +32,7 @@ namespace DiceRoller.Models.Dice
         /// The value at the position represented by side of the die.
         /// </summary>
         public List<BaseSide> Sides { get; set; }
+        public BaseGame Game { get; set; }
         /// <summary>
         /// The property to show how many sides a generic die has.
         /// </summary>

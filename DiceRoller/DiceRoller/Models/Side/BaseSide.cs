@@ -5,9 +5,9 @@ using System.Text;
 
 namespace DiceRoller.Models.Side
 {
-    public abstract class BaseSide : BaseObject
+    public class BaseSide : BaseObject
     {
-        public BaseDie Die { get; set; }
+        public BaseDie Die { get; }
         public bool IsExploding { get; set; }
 
         public BaseSide (BaseDie die)

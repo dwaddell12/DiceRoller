@@ -22,19 +22,4 @@
         android:text="&quot;Sample Text&quot;"
         android:layout_gravity="center_vertical"
         android:layout_weight="2" />
-    <EditText
-        android:inputType="number"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/Dice_Amount"
-        android:numeric="integer"
-        android:layout_weight="0.25"
-        android:gravity="center"
-        android:layout_marginRight="12px"
-        android:layout_marginLeft="20px"
-        android:layout_gravity="center_vertical"
-        android:hint="0"
-        android:maxLength="2"
-        xmlns:tools="http://schemas.android.com/tools"
-        tools:visibility="gone" />
 </LinearLayout>

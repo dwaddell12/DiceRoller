@@ -243,3 +243,6 @@ ModelManifest.xml
 
 # FAKE - F# Make
 .fake/
+/DiceRoller/DiceRoller.Droid/ExtendedModels/BaseSide.cs
+/DiceRoller/DiceRoller.Droid/ExtendedModels/BaseGame.cs
+/DiceRoller/DiceRoller.Droid/ExtendedModels/BaseDie.cs

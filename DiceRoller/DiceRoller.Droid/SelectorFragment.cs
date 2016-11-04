@@ -13,9 +13,11 @@ using Android.Widget;
 using DiceRoller.Models;
 using DiceRoller.Models.Dice;
 using DiceRoller.Models.Game;
+using Newtonsoft.Json;
 
 namespace DiceRoller.Droid
 {
+    
     public class SelectorFragment : Fragment
     {
         Spinner gameSpinner;
@@ -28,7 +30,7 @@ namespace DiceRoller.Droid
         long lastClickTimer = 0;
 
         private const string RESULTS = "Results";
-        bool _isDualPane;
+        bool isDualPane;
 
         public override void OnActivityCreated(Bundle savedInstanceState)
         {
@@ -40,28 +42,23 @@ namespace DiceRoller.Droid
             diceBag = new List<BaseDie>();
             diceList.ItemClick += (dieListSender, adapterArgs) =>
             {
-
                 DiceLayoutAdapter adapter = (DiceLayoutAdapter)diceList.Adapter;
                 BaseDie die = adapter.GetDieItem(adapterArgs.Position);
-
                 Button dieButton;
+                
                 //I use the Id from the AdapterArgs as a tag for recognizing buttons
                 //in the horizontal scroll at the bottom.
                 long id = adapterArgs.Id;
                 if (diceBagView.FindViewWithTag(id) != null)
-                {
                     dieButton = (Button)diceBagView.FindViewWithTag(id);
-                }
                 else
                 {
                     dieButton = new Button(Activity);
                     dieButton.Tag = id;
                     diceBagView.AddView(dieButton, 0);
                 }
-
-                dieButton.Text = die.Name + " x" + (diceBag.Where(m => m.Name == die.Name).Count() + 1);
                 diceBag.Add(die);
-
+                dieButton.Text = die.Name + " x" + (diceBag.Where(m => m.Name == die.Name).Count());
                 dieButton.Click += (buttonSender, buttonArgs) =>
                 {
                     //This lastClicked timer is implemented as a result of multiple clicks
@@ -71,34 +68,26 @@ namespace DiceRoller.Droid
                         lastClickTimer = SystemClock.ElapsedRealtime();
                         diceBag.Remove(die);
                         if (diceBag.Contains(die))
-                        {
                             dieButton.Text = die.Name + " x" + (diceBag.Where(m => m.Name == die.Name).Count());
-                        }
                         else
-                        {
                             diceBagView.RemoveView(dieButton);
-                        }
                     }
                 };
             };
 
             diceBagView = Activity.FindViewById<LinearLayout>(Resource.Id.Dice_Layout);
-            dice = DiceHelper.InitializeGenericDice();
+            dice = DiceHelper.InitializeGenericDice;
 
             games = new List<BaseGame>(DiceHelper.InitializeGames());
             gameSpinner.Adapter = new GameLayoutAdapter(Activity, games);
             gameSpinner.ItemSelected += _gameSpinner_ItemSelected;
             gameSpinner.SetSelection(0);
-            rollButton.Click += _rollButton_Click;
+            rollButton.Click += RollButton_Click;
             clearButton.Click += ClearButton_Click;
-            
-            
             var detailsFrame = Activity.FindViewById<View>(Resource.Id.Results_FrameLayout);
-            _isDualPane = detailsFrame != null && detailsFrame.Visibility == ViewStates.Visible;
-            if (_isDualPane)
-            {
-                ShowDetails();
-            }
+            isDualPane = detailsFrame != null && detailsFrame.Visibility == ViewStates.Visible;
+            if (isDualPane)
+                ShowDetails(new List<RollResult>());
         }
 
         private void ClearButton_Click(object sender, EventArgs e)
@@ -108,44 +97,61 @@ namespace DiceRoller.Droid
             rollButton.Text = "Roll";
         }
 
-        private void _rollButton_Click(object sender, EventArgs e)
+        private void RollButton_Click(object sender, EventArgs e)
         {
-            for (int i = 0; i < diceList.Count; i++)
-            {
-                rollButton.Text = "";
-                List<RollResult> results = RollHelper.RollCollectedDice(diceBag);
-                foreach (RollResult result in results)
-                {
-                    rollButton.Text += result.Side.Name + " from " + result.Die.Name + "\n";
-                }
+            List<RollResult> results = RollHelper.RollCollectedDice(diceBag);
+            ShowDetails(results);
+            //for (int i = 0; i < diceList.Count; i++)
+            //{
+            //    //List<RollResult> results = RollHelper.RollCollectedDice(diceBag);
+            //    //rollButton.Text = "";
+            //    //ShowDetails(results);
+            //    //TODO: Send results to new activity.
+            //    //foreach (RollResult result in results)
+            //    //    rollButton.Text += result.Side.Name + " from " + result.Die.Name + "\n";
 
-            }
+            //}
         }
 
         private void _gameSpinner_ItemSelected(object sender, AdapterView.ItemSelectedEventArgs e)
         {
+            diceBag = new List<BaseDie>();
+            diceBagView.RemoveAllViews();
             diceList.Adapter = new DiceLayoutAdapter(Activity, games[e.Position].Dice);
         }
-       
-        private void ShowDetails()
+        
+        private void ShowDetails(List<RollResult> results)
         {
-            if (_isDualPane)
+            if (isDualPane)
             {
                 // We can display everything in place with fragments.
                 // Have the list highlight this item and show the data.
                 //_dieList.SetItemChecked(pos, true);
                 // Check what fragment is shown, replace if needed.
-                var details = FragmentManager.FindFragmentById(Resource.Id.ResultItem_Layout) as ResultsFragment;
+                var details = FragmentManager.FindFragmentById(Resource.Id.Results_FrameLayout) as ResultsFragment;
                 if (details == null)
                 {
                     // Make new fragment to show this selection.
-                    details = ResultsFragment.NewInstance();
+                    details = ResultsFragment.NewInstance(results);
                     // Execute a transaction, replacing any existing
                     // fragment with this one inside the frame.
                     var ft = FragmentManager.BeginTransaction();
-                    ft.Replace(Resource.Id.ResultItem_Layout, details);
+                    ft.Replace(Resource.Id.Results_FrameLayout, details);
                     ft.SetTransition(FragmentTransit.FragmentFade);
                     ft.Commit();
+                }
+                else
+                {
+                    details = ResultsFragment.NewInstance(results);
+
+                    //var intent = new Intent();
+                    //JsonSerializerSettings settings = new JsonSerializerSettings();
+                    //settings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore;
+                    //intent.PutExtra(RESULTS, JsonConvert.SerializeObject(results, settings));
+                    
+                    //intent.SetClass(Activity, typeof(ResultsActivity));
+                    //details.FragmentManager.StartActivity(intent);
+                    //details.OnActivityCreated(new Bundle());
                 }
             }
             else
@@ -153,6 +159,11 @@ namespace DiceRoller.Droid
                 // Otherwise we need to launch a new Activity to display
                 // the dialog fragment with selected text.
                 var intent = new Intent();
+                // We have to customize our settings in one way for the JsonSerializer.
+                // We need to ignore Self-Refer
+                JsonSerializerSettings settings = new JsonSerializerSettings();
+                settings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore;
+                intent.PutExtra(RESULTS, JsonConvert.SerializeObject(results, settings));
                 intent.SetClass(Activity, typeof(ResultsActivity));
                 StartActivity(intent);
             }

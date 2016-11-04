@@ -8,18 +8,11 @@ namespace DiceRoller.Models
 {
     public class RollResult : BaseObject
     {
-        public BaseDie Die { get; set; }
         public BaseSide Side { get; set; }
 
-        public RollResult(BaseDie die) : base()
-        {
-            Die = die;
-            Side = die.RollDie.Side;
-        }
         public RollResult(BaseSide side) : base()
         {
             Side = side;
-            Die = side.Die;
         }
     }
 }

@@ -9,6 +9,8 @@ using Android.OS;
 using Android.Runtime;
 using Android.Views;
 using Android.Widget;
+using DiceRoller.Models;
+using Newtonsoft.Json;
 
 namespace DiceRoller.Droid
 {
@@ -16,14 +18,16 @@ namespace DiceRoller.Droid
     public class ResultsActivity : Activity
     {
         private const string RESULTS = "Results";
-        private const string CURRENT_POSITION = "Current Position";
 
         protected override void OnCreate(Bundle bundle)
         {
             base.OnCreate(bundle);
-            var index = Intent.Extras.GetInt(RESULTS, 0);
-
-            var details = ResultsFragment.NewInstance();
+            List<RollResult> results;
+            if (Intent.HasExtra(RESULTS))
+                results = JsonConvert.DeserializeObject<List<RollResult>>(Intent.GetStringExtra(RESULTS));
+            else
+                results = new List<RollResult>();
+            var details = ResultsFragment.NewInstance(results);
             // DetailsFragment.NewInstance is a factory method to create a Details Fragment
             var fragmentTransaction = FragmentManager.BeginTransaction();
             fragmentTransaction.Add(Android.Resource.Id.Content, details);

@@ -45,19 +45,27 @@ namespace DiceRoller.Droid
             return position;
         }
 
+        private class ViewHolder : Java.Lang.Object
+        {
+            internal TextView gameName;
+            internal ImageView gameIcon;
+        }
         public override View GetView(int position, View convertView, ViewGroup parent)
         {
-            View view = convertView;
-            if (view == null)
+            ViewHolder holder = null;
+            if (convertView == null)
             {
-                view = context.LayoutInflater.Inflate(Resource.Layout.Spinner_GameItem, null);
+                holder = new ViewHolder();
+                convertView = context.LayoutInflater.Inflate(Resource.Layout.Spinner_GameItem, null);
+                holder.gameName = convertView.FindViewById<TextView>(Resource.Id.Game_Title);
+                holder.gameIcon = convertView.FindViewById<ImageView>(Resource.Id.Game_Icon);
+                convertView.Tag = holder;
             }
-            var _gameName = view.FindViewById<TextView>(Resource.Id.Game_Title);
-            var _gameIcon = view.FindViewById<ImageView>(Resource.Id.Game_Icon);
-            _gameName.Text = games[position].Name;
-            
+            else
+                holder = (ViewHolder) convertView.Tag;
+            holder.gameName.Text = games[position].Name;
             //_gameIcon.SetImageDrawable(null);
-            return view;
+            return convertView;
         }
     }
 }

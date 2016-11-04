@@ -12,23 +12,34 @@ using Android.Views;
 using Android.Widget;
 using DiceRoller.Models;
 using DiceRoller.Models.Side;
+using Newtonsoft.Json;
 
 namespace DiceRoller.Droid
 {
     public class ResultsFragment : Fragment
     {
-        TextView _resultName;
-        TextView _resultSide;
+        GridView resultGrid;
+        List<RollResult> results;
+
         private const string RESULTS = "Results";
-        public static ResultsFragment NewInstance()
+        public static ResultsFragment NewInstance(List<RollResult> rolls)
         {
-            return new ResultsFragment { Arguments = new Bundle() };
+            var details = new ResultsFragment { Arguments = new Bundle() };
+            return details;
         }
         
+        // Maybe need an UpdateInstance();
 
         public override void OnActivityCreated(Bundle savedInstanceState)
         {
             base.OnActivityCreated(savedInstanceState);
+            Intent intent = Activity.Intent;
+            resultGrid = Activity.FindViewById<GridView>(Resource.Id.Result_Grid);
+            if (intent.HasExtra(RESULTS))
+                results = JsonConvert.DeserializeObject<List<RollResult>>(intent.GetStringExtra(RESULTS));
+            else
+                results = new List<RollResult>();
+            resultGrid.Adapter = new ResultsLayoutAdapter(Activity, results);
         }
 
         public override void OnCreate(Bundle savedInstanceState)
@@ -38,18 +49,12 @@ namespace DiceRoller.Droid
 
         public override View OnCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
         {
-            // Use this to return your custom view for this Fragment
-            // return inflater.Inflate(Resource.Layout.YourFragment, container, false);
-            if (container == null)
+            base.OnCreateView(inflater, container, savedInstanceState);
+            if(container == null)
             {
-                // Currently in a layout without a container, so no reason to create our view.
                 return null;
             }
-            GridView grid = container.FindViewById<GridView>(Resource.Id.Result_Grid);
-            List<RollResult> results = new List<RollResult>();
-            ResultsLayoutAdapter adapter = new ResultsLayoutAdapter(Activity, results);
-            grid.Adapter = adapter;
-            return container;
+            return inflater.Inflate(Resource.Layout.Fragment_Results, container, false);
         }
     }
 }
