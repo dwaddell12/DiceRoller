@@ -12,7 +12,7 @@ using System.Collections.Generic;
 
 namespace DiceRoller.Droid
 {
-	[Activity (Label = "DiceRoller.Droid", MainLauncher = true, Icon = "@drawable/icon")]
+	[Activity (Label = "DiceRoller", MainLauncher = true, Icon = "@drawable/icon")]
 	public class MainActivity : Activity
 	{
         /// <summary>

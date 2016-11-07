@@ -15,7 +15,7 @@ namespace DiceRoller
         /// <summary>
         /// A placeholder value holding a unique value for each Die object created
         /// </summary>
-        private static int _id = 0;
+        //private static int _id = 0;
 
         public static List<BaseGame> InitializeGames()
         {

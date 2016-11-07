@@ -14,7 +14,7 @@ using Newtonsoft.Json;
 
 namespace DiceRoller.Droid
 {
-    [Activity(Label = "ResultsActivity")]
+    [Activity(Label = "Results", ParentActivity = typeof(MainActivity))]
     public class ResultsActivity : Activity
     {
         private const string RESULTS = "Results";
