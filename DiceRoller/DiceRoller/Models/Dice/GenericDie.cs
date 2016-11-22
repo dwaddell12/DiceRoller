@@ -1,4 +1,5 @@
-﻿using DiceRoller.Models.Side;
+﻿using DiceRoller.Models.Game;
+using DiceRoller.Models.Side;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -11,12 +12,12 @@ namespace DiceRoller.Models.Dice
     public class GenericDie : BaseDie
     {
 
-        public GenericDie() : base()
+        public GenericDie(BaseGame game) : base(game)
         {
 
         }
         
-        public GenericDie(List<BaseSide> sides) : base(sides)
+        public GenericDie(BaseGame game, List<BaseSide> sides) : base(game, sides)
         {
 
         }

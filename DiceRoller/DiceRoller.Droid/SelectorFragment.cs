@@ -17,56 +17,92 @@ using Newtonsoft.Json;
 
 namespace DiceRoller.Droid
 {
-    
     public class SelectorFragment : Fragment
     {
         Spinner gameSpinner;
         ListView diceList;
         Button rollButton;
         Button clearButton;
-        List<BaseDie> dice, diceBag;
+        LinearLayout diceBagView, persistingDiceBagView;
+        List<BaseDie> dice;
+        List<BaseDie> diceBag;
         List<BaseGame> games;
-        LinearLayout diceBagView;
         long lastClickTimer = 0;
 
+        private static JsonSerializerSettings settings = new JsonSerializerSettings()
+        {
+            ReferenceLoopHandling = ReferenceLoopHandling.Ignore,
+            ConstructorHandling = ConstructorHandling.Default
+        };
+
+        private const string RETAINED_DATA = "Retained Data";
         private const string RESULTS = "Results";
         private const string DICEBAG = "Dice Bag";
         private const string DICEBAG_VIEW = "Dicebag View";
         private const string GAME_POSITION = "Game Position";
         bool isDualPane;
 
+        public override void OnResume()
+        {
+            base.OnResume();
+            if(diceBag == null)
+            {
+
+            }
+
+        }
+        public override void OnPause()
+        {
+            base.OnPause();
+            if (diceBag == null)
+            {
+
+            }
+
+        }
+
+        public override void OnDestroyView()
+        {
+            base.OnDestroyView();
+
+        }
         public override void OnActivityCreated(Bundle savedInstanceState)
         {
             base.OnActivityCreated(savedInstanceState);
-
-            gameSpinner = Activity.FindViewById<Spinner>(Resource.Id.Game_Spinner);
-            diceList = Activity.FindViewById<ListView>(Resource.Id.Die_List);
-            rollButton = Activity.FindViewById<Button>(Resource.Id.Roll_Button);
-            clearButton = Activity.FindViewById<Button>(Resource.Id.Clear_Button);
-            diceBagView = Activity.FindViewById<LinearLayout>(Resource.Id.Dice_Layout);
-
-            if (savedInstanceState != null)
-            {
-                diceBag = JsonConvert.DeserializeObject<List<BaseDie>>(savedInstanceState.GetString(DICEBAG));
-                foreach (BaseDie die in diceBag)
-                {
-                    CreateViewFromDie(die);
-                }
-                //diceBagView = JsonConvert.DeserializeObject<LinearLayout>(savedInstanceState.GetString(DICEBAG_VIEW));
-            }
-            else
+            if(savedInstanceState == null)
             {
                 diceBag = new List<BaseDie>();
             }
-
-            diceList.ItemClick += DiceList_ItemClick;
-            dice = DiceHelper.InitializeGenericDice;
-
+            else
+            {
+                diceBag = JsonConvert.DeserializeObject<List<BaseDie>>(savedInstanceState.GetString(DICEBAG));
+            }
+            if(gameSpinner == null)
+            {
+                gameSpinner = View.FindViewById<Spinner>(Resource.Id.Game_Spinner);
+            }
+            diceList = View.FindViewById<ListView>(Resource.Id.Dice_List);
+            rollButton = View.FindViewById<Button>(Resource.Id.Roll_Button);
+            clearButton = View.FindViewById<Button>(Resource.Id.Clear_Button);
+            diceBagView = View.FindViewById<LinearLayout>(Resource.Id.Dice_Layout);
+            if (persistingDiceBagView != null && persistingDiceBagView.ChildCount > 0)
+            {
+                int counter = persistingDiceBagView.ChildCount - 1;
+                View child;
+                for (int i = 0; i <= counter; i++)
+                {
+                    child = persistingDiceBagView.GetChildAt(0);
+                    persistingDiceBagView.RemoveView(child);
+                    diceBagView.AddView(child);
+                }
+                diceBagView.Invalidate();
+            }
             games = new List<BaseGame>(DiceHelper.InitializeGames());
             gameSpinner.Adapter = new GameLayoutAdapter(Activity, games);
             gameSpinner.ItemSelected += GameSpinner_ItemSelected;
-            gameSpinner.SetSelection(0);
+            //gameSpinner.SetSelection(0);
 
+            diceList.ItemClick += DiceList_ItemClick;
             rollButton.Click += RollButton_Click;
             clearButton.Click += ClearButton_Click;
 
@@ -74,12 +110,6 @@ namespace DiceRoller.Droid
             isDualPane = detailsFrame != null && detailsFrame.Visibility == ViewStates.Visible;
             if (isDualPane)
                 ShowDetails(new List<RollResult>());
-        }
-
-        private void CreateViewFromDie(BaseDie die)
-        {
-            //View dieView = diceList.FindViewWithTag(diceList.);
-            //diceList.PerformItemClick(dieView, ;
         }
 
         private void DiceList_ItemClick(object dieListSender, AdapterView.ItemClickEventArgs adapterArgs)
@@ -90,15 +120,13 @@ namespace DiceRoller.Droid
 
             //I use the Id from the AdapterArgs as a tag for recognizing buttons
             //in the horizontal scroll at the bottom.
-            
-            long id = adapterArgs.Id;
-            die.Id = (int) adapterArgs.Id;
-            if (diceBagView.FindViewWithTag(id) != null)
-                dieButton = (Button)diceBagView.FindViewWithTag(id);
+            //die.Id = adapterArgs.Id;
+            if (diceBagView.FindViewWithTag(die.Id) != null)
+                dieButton = (Button)diceBagView.FindViewWithTag(die.Id);
             else
             {
                 dieButton = new Button(Activity);
-                dieButton.Tag = id;
+                dieButton.Tag = die.Id;
                 diceBagView.AddView(dieButton, 0);
             }
             diceBag.Add(die);
@@ -116,7 +144,9 @@ namespace DiceRoller.Droid
                     else
                         diceBagView.RemoveView(dieButton);
                 }
+                FragmentManager.SaveFragmentInstanceState(this);
             };
+            FragmentManager.SaveFragmentInstanceState(this);
         }
 
         private void ClearButton_Click(object sender, EventArgs e)
@@ -129,16 +159,18 @@ namespace DiceRoller.Droid
         private void RollButton_Click(object sender, EventArgs e)
         {
             List<RollResult> results = RollHelper.RollCollectedDice(diceBag);
+            FragmentManager.SaveFragmentInstanceState(this);
             ShowDetails(results);
         }
 
         private void GameSpinner_ItemSelected(object sender, AdapterView.ItemSelectedEventArgs e)
         {
-            diceBag = new List<BaseDie>();
-            diceBagView.RemoveAllViews();
-            diceList.Adapter = new DiceLayoutAdapter(Activity, games[e.Position].Dice);
+            //diceBag = new List<BaseDie>();
+            //diceBagView.RemoveAllViews();
+            dice = DiceHelper.InitializeDice(games[e.Position]);
+            diceList.Adapter = new DiceLayoutAdapter(Activity, dice);
         }
-        
+
         private void ShowDetails(List<RollResult> results)
         {
             if (isDualPane)
@@ -162,8 +194,6 @@ namespace DiceRoller.Droid
                 else
                 {
                     details = ResultsFragment.NewInstance(results);
-
-                    
                     //intent.SetClass(Activity, typeof(ResultsActivity));
                     //details.FragmentManager.StartActivity(intent);
                     //details.OnActivityCreated(new Bundle());
@@ -176,39 +206,24 @@ namespace DiceRoller.Droid
                 Intent intent = new Intent();
                 // We have to customize our settings in one way for the JsonSerializer.
                 // We need to ignore Self-Refer
-                JsonSerializerSettings settings = new JsonSerializerSettings() { ReferenceLoopHandling = ReferenceLoopHandling.Ignore };
                 intent.PutExtra(RESULTS, JsonConvert.SerializeObject(results, settings));
                 intent.SetClass(Activity, typeof(ResultsActivity));
                 StartActivity(intent);
             }
         }
 
-        //private string CreateJSONFromObject(List<object> obj)
-        //{
-        //    JsonSerializerSettings settings = new JsonSerializerSettings() { ReferenceLoopHandling = ReferenceLoopHandling.Ignore };
-        //    return JsonConvert.SerializeObject(obj, settings);
-        //}
-        public override void OnCreate(Bundle savedInstanceState)
-        {
-            base.OnCreate(savedInstanceState);
-            // Create your fragment here
-        }
-
         public override void OnSaveInstanceState(Bundle outState)
         {
             base.OnSaveInstanceState(outState);
-            JsonSerializerSettings settings = new JsonSerializerSettings() { ReferenceLoopHandling = ReferenceLoopHandling.Ignore };
+            persistingDiceBagView = diceBagView;
             outState.PutString(DICEBAG, JsonConvert.SerializeObject(diceBag, settings));
             outState.PutInt(GAME_POSITION, gameSpinner.LastVisiblePosition);
-            //outState.PutString(DICEBAG_VIEW, JsonConvert.SerializeObject(diceBagView, settings));
         }
+        
         public override View OnCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
         {
-            // Use this to return your custom view for this Fragment
-            // return inflater.Inflate(Resource.Layout.YourFragment, container, false);
-
             base.OnCreateView(inflater, container, savedInstanceState);
-            return inflater.Inflate(Resource.Layout.Fragment_Selector, container, true);
+            return inflater.Inflate(Resource.Layout.Fragment_Selector, container, false);
         }
     }
 }

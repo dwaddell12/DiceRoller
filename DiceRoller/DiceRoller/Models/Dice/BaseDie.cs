@@ -32,7 +32,7 @@ namespace DiceRoller.Models.Dice
         /// The value at the position represented by side of the die.
         /// </summary>
         public List<BaseSide> Sides { get; set; }
-        public BaseGame Game { get; set; }
+        public BaseGame Game { get; }
         /// <summary>
         /// The property to show how many sides a generic die has.
         /// </summary>
@@ -55,20 +55,31 @@ namespace DiceRoller.Models.Dice
                 
             }
         }
-
+        
         /// <summary>
-        /// An empty constructor for a die object
+        /// 
         /// </summary>
         public BaseDie()
         {
-            Sides = new List<BaseSide>();
+
         }
         /// <summary>
-        /// A constructor for a die object
+        /// 
         /// </summary>
-        /// <param name="values">An array of values for the die.</param>
-        public BaseDie(List<BaseSide> sides)
+        /// <param name="sides"></param>
+        public BaseDie(BaseGame game)
         {
+            Game = game;
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="game"></param>
+        /// <param name="sides"></param>
+        public BaseDie(BaseGame game, List<BaseSide> sides)
+        {
+            Game = game;
             Sides = sides;
         }
     }

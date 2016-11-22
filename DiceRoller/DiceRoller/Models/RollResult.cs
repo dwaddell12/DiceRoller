@@ -10,6 +10,13 @@ namespace DiceRoller.Models
     {
         public BaseSide Side { get; set; }
 
+        public BaseDie Die
+        {
+            get
+            {
+                return Side.Die;
+            }
+        }
         public RollResult(BaseSide side) : base()
         {
             Side = side;

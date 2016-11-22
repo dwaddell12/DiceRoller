@@ -15,39 +15,50 @@ namespace DiceRoller.Droid
 	[Activity (Label = "DiceRoller", MainLauncher = true, Icon = "@drawable/icon")]
 	public class MainActivity : Activity
 	{
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="bundle"></param>
+        private const string RETAINED_DATA = "Retained Data";
+
+        SelectorFragment selectorFragment;
+
 		protected override void OnCreate (Bundle bundle)
 		{
 			base.OnCreate (bundle);
-			SetContentView (Resource.Layout.Activity_Main);
+            SetContentView(Resource.Layout.Activity_Main);
+            //if (selectorFragment == null)
+            //{
+            //    selectorFragment = SelectorFragment.NewInstance();
+            //    var fragmentTransaction = FragmentManager.BeginTransaction();
+            //    fragmentTransaction.Add(Android.Resource.Id.Content, selectorFragment);
+            //    fragmentTransaction.Commit();
+            //}
+            //else
+            //{
+            //    selectorFragment = FragmentManager.GetFragment<SelectorFragment>(bundle, RETAINED_DATA);
+            //}
+            // DetailsFragment.NewInstance is a factory method to create a Details Fragment
+            //if (bundle != null)
+            //{
+            //    //var replacedFrag = FragmentManager.FindFragmentById<SelectorFragment>(Resource.Id.Selector_Fragment);
+            //    selectorFragment = FragmentManager.GetFragment<SelectorFragment>(bundle, RETAINED_DATA);
+            //    //FragmentManager.BeginTransaction().Attach(selectorFragment);
+            //    //FragmentTransaction transaction = FragmentManager.BeginTransaction();
+            //    //transaction.Replace(Resource.Id.Selector_Fragment, selectorFragment);
+            //    //transaction.Remove(replacedFrag);
+            //    //transaction.Commit();
+            //}
+            //if (selectorFragment == null)
+            //{
+            //    selectorFragment = FragmentManager.FindFragmentById<SelectorFragment>(Resource.Id.Selector_Fragment);
+            //    selectorFragment.RetainInstance = true;
+            //}
+            //RequestedOrientation = Android.Content.PM.ScreenOrientation.Portrait;
         }
-        /// <summary>
-        /// Sets up a list view that is populated with generic dice that display a result when tapped.
-        /// </summary>
-        private void CreateGenericDieList()
-        {
-            /*
-            List<BaseDie> dice = DiceHelper.InitializeGenericDice();
-            dieList = FindViewById<ListView>(Resource.Id.Die_List);
 
-            dieList.Adapter = new DiceLayoutAdapter(this, dice);
-            dieList.ItemClick += (sender, args) => {
-                var result = dice[args.Position].RollDie();
-                dieResult.Text = result.ToString();
-            };
-            */
-        }
-        /// <summary>
-        /// Collects pertainant data from the MainActivity
-        /// </summary>
-        /// <param name="outState">A bundle of data that is to persist.</param>
+
+
         protected override void OnSaveInstanceState(Bundle outState)
         {
             base.OnSaveInstanceState(outState);
-            //outState.PutString(RESULTS, dieResult.Text.ToString());
+            //FragmentManager.PutFragment(outState, RETAINED_DATA, selectorFragment);
         }
     }
 }

@@ -67,7 +67,7 @@ namespace DiceRoller.Droid
             else
                 holder = (ViewHolder) convertView.Tag;
             RollResult result = results[position];
-            holder.resultDie.Text = result.Side.Die.Name;
+            holder.resultDie.Text = result.Die.Name;
             holder.resultSide.Text = result.Side.Name;
             return convertView;
         }

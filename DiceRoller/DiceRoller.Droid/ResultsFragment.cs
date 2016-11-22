@@ -22,6 +22,7 @@ namespace DiceRoller.Droid
         List<RollResult> results;
 
         private const string RESULTS = "Results";
+
         public static ResultsFragment NewInstance(List<RollResult> rolls)
         {
             var details = new ResultsFragment { Arguments = new Bundle() };
@@ -50,10 +51,6 @@ namespace DiceRoller.Droid
         public override View OnCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
         {
             base.OnCreateView(inflater, container, savedInstanceState);
-            if(container == null)
-            {
-                return null;
-            }
             return inflater.Inflate(Resource.Layout.Fragment_Results, container, false);
         }
     }

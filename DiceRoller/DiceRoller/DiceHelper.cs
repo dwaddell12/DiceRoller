@@ -12,11 +12,10 @@ namespace DiceRoller
     /// </summary>
     public static class DiceHelper
     {
+        private static long UNIQUE_ID = 100000;
         /// <summary>
         /// A placeholder value holding a unique value for each Die object created
         /// </summary>
-        //private static int _id = 0;
-
         public static List<BaseGame> InitializeGames()
         {
             var games = new List<BaseGame>();
@@ -30,23 +29,27 @@ namespace DiceRoller
             }
             return games;
         }
-
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="game"></param>
+        /// <returns></returns>
         public static List<BaseDie> InitializeDice(BaseGame game)
         {
             var dice = new List<BaseDie>();
             switch (game.Name)
             {
                 case "Dungeons & Dragons":
-                    dice = InitializeGenericDice;
+                    dice = InitializeGenericDice(game);
                     break;
                 case "Betrayal at House on the Hill":
-                    dice = InitializeBaothDice;
+                    dice = InitializeBaothDice(game);
                     break;
                 case "World of Darkness":
-                    dice = InitializeWodDice;
+                    dice = InitializeWodDice(game);
                     break;
                 default:
-                    dice = InitializeGenericDice;
+                    dice = InitializeGenericDice(game);
                     break;
             }
             return dice;
@@ -57,18 +60,16 @@ namespace DiceRoller
         /// <summary>
         /// Creates eight generic dice used in typical Tabletop games
         /// </summary>
-        public static List<BaseDie> InitializeGenericDice
+        public static List<BaseDie> InitializeGenericDice(BaseGame game)
         {
-            get
-            {
                 return new List<BaseDie>
                 {
-                    CreateGenericDie(2), CreateGenericDie(4), CreateGenericDie(6),
-                    CreateGenericDie(8), CreateGenericDie(10), CreateGenericDie(12),
-                    CreateGenericDie(20), CreateGenericDie(100)
+                    CreateGenericDie(game, 2), CreateGenericDie(game, 4),
+                    CreateGenericDie(game, 6), CreateGenericDie(game, 8),
+                    CreateGenericDie(game, 10), CreateGenericDie(game, 12),
+                    CreateGenericDie(game, 20), CreateGenericDie(game, 100)
                 };
-            }
-            
+   
         }
 
         /// <summary>
@@ -77,85 +78,82 @@ namespace DiceRoller
         /// </summary>
         /// <param name="sides">The number of sides for the generic die</param>
         /// <returns>The generic die object with all values inserted</returns>
-        private static GenericDie CreateGenericDie(int sides)
+        private static GenericDie CreateGenericDie(BaseGame game, int sides)
         {
-            GenericDie die = new GenericDie();
+            GenericDie die = new GenericDie(game);
             die.Sides = new List<BaseSide>();
             for (int i = 0; i < sides; i++)
             {
+                //Each game, die, and side will have a unique Id value.
+                //Until then, this temporary code is here.
+                UNIQUE_ID++;
+                die.Id = UNIQUE_ID;
                 GenericSide side = new GenericSide(die);
                 side.Id = i;
                 side.Name = (i+1).ToString();
                 die.Sides.Add(side);
             }
-            die.Name = "D&D d" + sides.ToString();
+            die.Name = "D&D D" + sides.ToString();
             return die;
         }
 
         // BELOW ARE SAMPLE DICE WITH NO MEANINGFUL METHODS
-
-        public static List<BaseDie> InitializeBaothDice
+        /// <summary>
+        /// 
+        /// </summary>
+        public static List<BaseDie> InitializeBaothDice(BaseGame game)
         {
-            get
-            {
-                List<BaseDie> dice = new List<BaseDie>();
-                dice.Add(CreateBaothDice);
-                return dice;
-            }
-
+            List<BaseDie> dice = new List<BaseDie>();
+            dice.Add(CreateBaothDice(game));
+            return dice;
         }
-
-        private static BaseDie CreateBaothDice
+        /// <summary>
+        /// 
+        /// </summary>
+        private static BaseDie CreateBaothDice(BaseGame game)
         {
-            get
+            GenericDie die = new GenericDie(game);
+            die.Sides = new List<BaseSide>();
+            for (int i = 0; i < 3; i++)
             {
-                GenericDie die = new GenericDie();
-                die.Sides = new List<BaseSide>();
-                for (int i = 0; i < 3; i++)
-                {
-                    GenericSide side = new GenericSide(die);
-                    side.Id = i;
-                    side.Name = (i).ToString();
-                    die.Sides.Add(side);
-                }
-
-                die.Name = "Betrayal Die";
-                return die;
+                UNIQUE_ID++;
+                die.Id = UNIQUE_ID;
+                GenericSide side = new GenericSide(die);
+                //side.Id = i;
+                side.Id = UNIQUE_ID;
+                side.Name = (i).ToString();
+                die.Sides.Add(side);
             }
+
+            die.Name = "Betrayal Die";
+            return die;
+        }
             
-        }
-
-        public static List<BaseDie> InitializeWodDice
+        public static List<BaseDie> InitializeWodDice(BaseGame game)
         {
-            get
-            {
-                List<BaseDie> dice = new List<BaseDie>();
-                dice.Add(CreateWodDice);
-                return dice;
-            }
-            
+            List<BaseDie> dice = new List<BaseDie>();
+            dice.Add(CreateWodDice(game));
+            return dice;
         }
-
-        private static BaseDie CreateWodDice
+        private static BaseDie CreateWodDice(BaseGame game)
         {
-            get
+            GenericDie die = new GenericDie(game);
+            die.Sides = new List<BaseSide>();
+            for (int i = 0; i < 10; i++)
             {
-                GenericDie die = new GenericDie();
-                die.Sides = new List<BaseSide>();
-                for (int i = 0; i < 10; i++)
+                UNIQUE_ID++;
+                GenericSide side = new GenericSide(die);
+                //side.Id = i;
+                side.Id = UNIQUE_ID;
+                side.Name = (i + 1).ToString();
+                if (i == 10)
                 {
-                    GenericSide side = new GenericSide(die);
-                    side.Id = i;
-                    side.Name = (i + 1).ToString();
-                    if (i == 10)
-                    {
-                        side.IsExploding = true;
-                    }
-                    die.Sides.Add(side);
+                    side.IsExploding = true;
                 }
-                die.Name = "Wod d10";
-                return die;
+                die.Sides.Add(side);
             }
+            die.Name = "WoD D10";
+            return die;
         }
     }
 }
