@@ -6,19 +6,30 @@ using Android.Runtime;
 using Android.Views;
 using Android.Widget;
 using Android.OS;
-using DiceRoller.Models;
-using DiceRoller.Models.Dice;
+using SQLite;
+using DiceRoller;
 using System.Collections.Generic;
+using System.IO;
+using DiceRoller.Models;
 
 namespace DiceRoller.Droid
 {
-	[Activity (Label = "DiceRoller", MainLauncher = true, Icon = "@drawable/icon")]
-	public class MainActivity : Activity
-	{
+    [Activity(Label = "DiceRoller", MainLauncher = true, Icon = "@drawable/icon")]
+    public class MainActivity : Activity
+    {
         private const string RETAINED_DATA = "Retained Data";
+        private DiceRollerDeviceDB _database;
+        public DiceRollerDeviceDB Database
+        {
+            get
+            {
+                if (_database == null)
+                    _database = new DiceRollerDeviceDB(DataController.DatabasePath);
+                return _database;
+            }
+        }
 
-        SelectorFragment selectorFragment;
-
+        
 		protected override void OnCreate (Bundle bundle)
 		{
 			base.OnCreate (bundle);
@@ -52,8 +63,6 @@ namespace DiceRoller.Droid
             //}
             //RequestedOrientation = Android.Content.PM.ScreenOrientation.Portrait;
         }
-
-
 
         protected override void OnSaveInstanceState(Bundle outState)
         {

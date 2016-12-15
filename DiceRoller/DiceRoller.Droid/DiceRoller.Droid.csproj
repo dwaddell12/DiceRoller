@@ -48,12 +48,10 @@
     <Reference Include="Mono.Android" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="GameLayoutAdapter.cs" />
-    <Compile Include="JavaObjectWrapper.cs" />
-    <Compile Include="ResultsLayoutAdapter.cs" />
-    <Compile Include="DiceLayoutAdapter.cs" />
+    <Compile Include="Adapters\GameLayoutAdapter.cs" />
+    <Compile Include="Adapters\ResultsLayoutAdapter.cs" />
+    <Compile Include="Adapters\DiceLayoutAdapter.cs" />
     <Compile Include="ResultsActivity.cs" />
-    <Compile Include="RetainedFragment.cs" />
     <Compile Include="SelectorFragment.cs" />
     <Compile Include="MainActivity.cs" />
     <Compile Include="Resources\Resource.designer.cs" />

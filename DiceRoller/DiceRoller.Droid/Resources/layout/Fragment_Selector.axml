@@ -1,29 +1,29 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-      android:id="@+id/Selector_Layout"
-      android:orientation="vertical"
-      android:layout_width="match_parent"
-      android:layout_height="match_parent" >
-  <Spinner
-      android:id="@+id/Game_Spinner"
-      android:layout_width="match_parent"
-      android:layout_height="wrap_content" />
-  <ListView
-      android:id="@+id/Dice_List"
-      android:minWidth="25px"
-      android:minHeight="25px"
-      android:layout_width="match_parent"
-      android:layout_height="match_parent"
-      android:layout_weight="1" />
+    android:id="@+id/Selector_Layout"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <Spinner
+        android:id="@+id/Game_Spinner"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+    <ListView
+        android:id="@+id/Dice_List"
+        android:minWidth="25px"
+        android:minHeight="25px"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_weight="1" />
     <HorizontalScrollView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/Dice_Scroller">
-      <LinearLayout
-          android:id="@+id/Dice_Layout"
-          android:orientation="horizontal"
-          android:layout_width="match_parent"
-          android:layout_height="match_parent" />
+        <LinearLayout
+            android:id="@+id/Dice_Layout"
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
     </HorizontalScrollView>
     <LinearLayout
         android:id="@+id/Selector_Controls"
@@ -31,7 +31,7 @@
         android:minWidth="25px"
         android:minHeight="25px"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" >
+        android:layout_height="wrap_content">
         <Button
             android:id="@+id/Clear_Button"
             android:text="Clear"
@@ -39,7 +39,7 @@
             android:layout_height="match_parent"
             android:layout_weight="1" />
         <Button
-            android:id="@+id/Roll_Button" 
+            android:id="@+id/Roll_Button"
             android:text="Roll"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"

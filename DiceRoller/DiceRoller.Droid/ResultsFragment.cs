@@ -11,7 +11,6 @@ using Android.Util;
 using Android.Views;
 using Android.Widget;
 using DiceRoller.Models;
-using DiceRoller.Models.Side;
 using Newtonsoft.Json;
 
 namespace DiceRoller.Droid

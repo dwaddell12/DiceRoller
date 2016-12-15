@@ -1,11 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
-using DiceRoller.Models;
-using DiceRoller.Models.Side;
-using DiceRoller.Models.Game;
+using SQLite;
 
-namespace DiceRoller.Models.Dice
+namespace DiceRoller.Models
 {
     /// <summary>
     /// A generic die is a common die who's sides are gradually iterating numbers
@@ -28,16 +26,18 @@ namespace DiceRoller.Models.Dice
         private static readonly Random random = new Random();
         private static readonly object syncLock = new object();
 
+        [NotNull]
         /// <summary>
         /// The value at the position represented by side of the die.
         /// </summary>
         public List<BaseSide> Sides { get; set; }
+        [NotNull]
         public BaseGame Game { get; }
         /// <summary>
         /// The property to show how many sides a generic die has.
         /// </summary>
         public int NumberOfSides { get { return Sides.Count; } }
-
+        
         /// <summary>
         /// Rolls a die that will return one of the die's values.
         /// </summary>
@@ -61,7 +61,8 @@ namespace DiceRoller.Models.Dice
         /// </summary>
         public BaseDie()
         {
-
+            Game = new BaseGame();
+            Sides = new List<BaseSide>();
         }
         /// <summary>
         /// 
@@ -70,6 +71,7 @@ namespace DiceRoller.Models.Dice
         public BaseDie(BaseGame game)
         {
             Game = game;
+            Sides = new List<BaseSide>();
         }
 
         /// <summary>

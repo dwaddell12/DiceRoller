@@ -9,15 +9,13 @@
     <Import_RootNamespace>DiceRoller</Import_RootNamespace>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="$(MSBuildThisFileDirectory)DataController.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)DiceRollerDeviceDB.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Models\BaseDie.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Models\BaseGame.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Models\BaseObject.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Models\Dice\BaseDie.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Models\Dice\GenericDie.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Models\Game\BaseGame.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Models\Game\GenericGame.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)DiceHelper.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Models\BaseSide.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Models\RollResult.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Models\Side\BaseSide.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Models\Side\GenericSide.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)RollHelper.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)SQLite.cs" />
   </ItemGroup>

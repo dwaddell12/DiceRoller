@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using SQLite;
 
 namespace DiceRoller.Models
 {
@@ -9,7 +10,8 @@ namespace DiceRoller.Models
     /// </summary>
     public abstract class BaseObject
     {
-        public long Id { get; set; }
+        [PrimaryKey, AutoIncrement, Unique]
+        public int Id { get; }
         public string Name { get; set; }
     }
 }
